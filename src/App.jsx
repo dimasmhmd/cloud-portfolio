@@ -146,8 +146,27 @@ const projectsData = [
     category: 'AI & Automation',
     shortDesc: 'Integrasi agen AI cerdas untuk otomasi dukungan IT dan layanan mandiri (self-service).',
     tech: ['Copilot Studio', 'Power Automate', 'Azure OpenAI'],
-    businessValue: 'Mengurangi volume tiket IT Helpdesk Level 1 hingga 60% dan mempercepat resolusi masalah dari hitungan jam menjadi detik.',
-    background: 'Tim IT Helpdesk kewalahan menangani pertanyaan berulang yang menghabiskan waktu engineer tingkat lanjut.',
+    businessValue: [
+      'Banyak organisasi menghadapi "tembok" dalam skala pelayanan: semakin besar bisnis, semakin tinggi beban tim support. AI Assistant hadir bukan untuk mengganti manusia, melainkan untuk memperkuat kapasitas mereka.',
+      'Masalah Utama Sebelum Implementasi:',
+      'Respon Terhambat: Customer / user harus menunggu jam kerja atau antrean panjang untuk pertanyaan sederhana.',
+      'Kelelahan Operasional: Tim support menghabiskan 70% waktu mereka menjawab pertanyaan repetitif (FAQ).',
+      'Knowledge Silos: Informasi penting tersebar di ribuan dokumen PDF dan database yang sulit diakses secara cepat.',
+      'Inkonsistensi: Jawaban yang diberikan antar agen seringkali berbeda, meningkatkan risiko human error.',
+      'Manfaat Strategis yang Dihasilkan:',
+      'Otomasi Layanan 24/7: Layanan tersedia setiap saat tanpa biaya lembur / penambahan staf.',
+      'Respon Instan & Konsisten: Jawaban diberikan dalam hitungan detik dengan akurasi data yang terjamin.',
+      'Pengurangan Beban Operasional: Menurunkan volume tiket support secara signifikan sehingga tim support dapat fokus pada masalah kompleks.',
+      'Knowledge Terpusat: Mengubah ribuan dokumen menjadi "otak digital" yang dapat ditanya kapan saja.',
+      'Peningkatan Kepuasan (CSAT): Memberikan pengalaman customer / user yang modern, cepat, dan solutif.'
+    ],
+    background: [
+      'Tim Customer Service menangani pertanyaan dari customer / user secara manual. Dokumentasi disimpan dalam folder shared drive yang membuat staf kesulitan mencari informasi terbaru saat berhadapan dengan customer / user.',
+      'Tantangan:',
+      'Tidak Scalable: Penambahan jumlah customer / user mengharuskan penambahan jumlah staf secara linear.',
+      'Response Time Lama: Rata-rata waktu tunggu customer / user mencapai 15-30 menit.',
+      'Ketergantungan Manusia: Kehilangan satu karyawan senior berarti kehilangan banyak "pengetahuan" tentang produk.'
+    ],
     architecture: 'Bot AI dibangun, diintegrasikan dengan Azure dan menggunakan Power Automate untuk memberikan informasi berdasarkan trigger percapapan.',
     
     slides: [
@@ -168,15 +187,18 @@ const projectsData = [
     ],
 
     implementation: [
-      'Identifikasi keluhan IT Helpdesk dari data historis.',
-      'Desain alur percakapan (dialog tree) dan integrasi Generative AI fallback.',
-      'Pembuatan alur Power Automate untuk integrasi sistem.',
-      'Deployment chatbot ke platform perusahaan.',
-      'Pelatihan dan fine-tuning model bahasa berbasis dokumen SOP perusahaan.'
+      'Requirement Gathering: Mengidentifikasi pertanyaan paling sering muncul dan menentukan sumber data utama.',
+      'Data Preprocessing & Embedding: Membersihkan data dari dokumen (PDF/Docx) dan mengubahnya menjadi format vektor agar "dimengerti" oleh mesin.',
+      'Setup AI Model (LLM): Konfigurasi model bahasa tingkat lanjut (seperti GPT-4 melalui Azure OpenAI) sebagai otak pemroses bahasa.',
+      'Integrasi Vector Database: Menggunakan database khusus untuk menyimpan pengetahuan perusahaan agar AI tidak berhalusinasi dan tetap merujuk pada data asli (RAG).',
+      'Development Chatbot Interface: Membangun antarmuka yang ramah pengguna (Web Widget).',
+      'Integrasi Sistem: Menghubungkan chatbot ke infrastruktur cloud perusahaan.',
+      'Testing & Guardrails: Menguji akurasi jawaban dan memasang batasan agar AI tidak menjawab hal-hal di luar topik perusahaan.',
+      'Deployment & Monitoring: Peluncuran bertahap dan evaluasi performa secara real-time.'
     ],
     results: [
       'Tingkat penyelesaian masalah mandiri mencapai 60%.',
-      'Peningkatan kepuasan pengguna dengan ketersediaan layanan 24/7.',
+      'Peningkatan kepuasan customer / user dengan ketersediaan layanan 24/7.',
       'Integrasi aman dan mulus dalam ekosistem perusahaan.'
     ]
   },
