@@ -16,8 +16,27 @@ const projectsData = [
     category: 'Cloud Infrastructure',
     shortDesc: 'Membangun jalur aman (VPN Site-to-Site) untuk memperluas kapasitas komputasi on-premise ke Microsoft Azure secara seamless tanpa mengorbankan keamanan.',
     tech: ['Azure VM', 'VPN Gateway', 'VNet', 'NSG'],
-    businessValue: 'Merubah model CAPEX ke OPEX, memangkas waktu provisi server dari berminggu-minggu menjadi 15 menit.',
-    background: 'Kapasitas pusat data lokal klien (institusi finansial) telah mencapai batas maksimal. Kebutuhan akan skalabilitas mendadak di akhir bulan memerlukan solusi komputasi yang elastis tanpa mengekspos aplikasi internal ke internet publik.',
+    businessValue: [
+      'Banyak perusahaan terjebak dalam keterbatasan infrastruktur fisik yang kaku. Implementasi Hybrid Cloud hadir sebagai jembatan cerdas untuk modernisasi tanpa harus meninggalkan investasi aset lokal yang sudah ada.',
+      'Masalah Utama Sebelum Implementasi:',
+      'Keterbatasan Skalabilitas: Sulit dan mahalnya menambah kapasitas server fisik saat beban kerja meningkat mendadak.',
+      'Risiko Downtime: Tidak adanya sistem cadangan (redundancy) yang mumpuni di luar lokasi fisik utama.',
+      'Biaya Tinggi (CAPEX): Pengeluaran besar di muka untuk pembelian perangkat keras yang seringkali tidak terpakai maksimal.',
+      'Manfaat Strategis yang Dihasilkan:',
+      'Efisiensi Biaya (CAPEX ke OPEX): Mengurangi kebutuhan pembelian server fisik baru. Anda hanya membayar apa yang Anda gunakan di Azure.',
+      'Skalabilitas Fleksibel: Menambah atau mengurangi kapasitas komputasi dalam hitungan menit sesuai permintaan pasar.',
+      'High Availability & Reliability: Menjamin aplikasi tetap berjalan meskipun server lokal mengalami gangguan.',
+      'Disaster Recovery Readiness: Infrastruktur Azure berfungsi sebagai situs pemulihan bencana (failover) yang tangguh dan otomatis.'
+    ],
+    background: [
+      'Kondisi Existing:',
+      'Perusahaan bergantung sepenuhnya pada deretan server fisik (on-premise) di kantor pusat untuk menjalankan aplikasi ERP dan database. Seiring pertumbuhan perusahaan, beban kerja meningkat pesat.',
+      'Tantangan:',
+      'Maintenance Tinggi: Tim IT menghabiskan waktu hanya untuk memperbaiki hardware lokal.',
+      'Resource Terbatas: Ruang di ruang server sudah penuh, pendinginan server tidak lagi optimal.',
+      'Rigidity: Membutuhkan waktu 4-8 minggu untuk pengadaan server baru.',
+      'Transformasi Digital: Kebutuhan mendesak untuk memiliki akses data dari berbagai wilayah dengan aman.'
+    ],
     architecture: 'Infrastruktur menggunakan Azure Virtual Network (VNet) yang terhubung ke router lokal via Azure VPN Gateway (IPsec/IKEv2). VM di Azure diisolasi menggunakan Network Security Group (NSG) dan hanya dapat diakses melalui alamat IP privat dari intranet perusahaan.',
     
     slides: [
@@ -56,16 +75,23 @@ const projectsData = [
     ],
     
     implementation: [
-      'Desain topologi jaringan dan IP addressing untuk mencegah overlapping antara on-premise dan cloud.',
-      'Deployment Azure VPN Gateway dan konfigurasi Local Network Gateway di portal Azure.',
-      'Provisi Azure Virtual Machines (Windows/Linux) pada workload subnet khusus yang terisolasi.',
-      'Penerapan kebijakan firewall zero-trust menggunakan Azure Network Security Group (NSG).',
-      'Validasi latensi tunnel (< 20ms) dan uji penetrasi keamanan.'
+      'Assessment Infrastruktur Existing: Audit kapasitas server, penggunaan bandwidth, dan kompatibilitas aplikasi.',
+      'Perencanaan Arsitektur Hybrid: Merancang topologi jaringan (IP Address, Subnet) agar server lokal dan Azure bisa saling "berbicara" dalam satu jaringan privat.',
+      'Setup Azure Virtual Network (VNet): Membangun lingkungan jaringan virtual yang aman di Cloud.',
+      'Konfigurasi VPN Site-to-Site: Menggunakan Azure VPN Gateway untuk menghubungkan firewall lokal dengan Azure melalui koneksi terenkripsi AES-256 bit.',
+      'Provisioning Azure Virtual Machine: Mendeploy server virtual dengan spesifikasi yang dioptimalkan sesuai beban kerja.',
+      'Migrasi & Replikasi: Memindahkan sebagian beban kerja (seperti Web Server) ke Azure VM sementara Database tetap di lokal untuk alasan regulasi data.',
+      'Integrasi Data & Aplikasi: Sinkronisasi Active Directory lokal dengan Azure agar login karyawan tetap seragam (Single Sign-On).',
+      'Testing (Failover & Performance): Simulasi jika koneksi terputus dan pengujian kecepatan akses dari luar kantor.',
+      'Monitoring & Optimization: Mengaktifkan Azure Monitor untuk melihat kesehatan sistem secara real-time.'
     ],
     results: [
-      'Konektivitas jaringan internal 99.9% uptime dengan throughput stabil.',
-      'Peningkatan kelincahan operasional (Agility) tim developer.',
-      'Lolos audit kepatuhan (compliance) regulasi keamanan data.'
+      'Implementasi ini memberikan dampak nyata yang dapat diukur secara finansial maupun operasional:',
+      '',
+      'Downtime berkurang hingga 99.9%: Dengan fitur Failover dan High Availability di Azure, layanan tetap aktif meskipun ada kendala server fisik (on-premise).',
+      'Peningkatan Performa 40%: Aplikasi berjalan lebih cepat karena beban kerja didistribusikan secara cerdas.',
+      'Efisiensi Biaya 30%: Mengurangi biaya listrik, pendinginan, dan pemeliharaan hardware fisik tahunan.',
+      'Deployment Speed: Menyediakan server baru kini hanya membutuhkan 15 menit, dari yang sebelumnya 4 minggu.'
     ]
   },
   {
@@ -729,7 +755,30 @@ function ProjectDetailView({ project, onBack }) {
           <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">{project.title}</h1>
           <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-6">
             <h3 className="flex items-center text-blue-800 font-bold mb-2"><Activity className="w-5 h-5 mr-2" /> Nilai Bisnis Utama</h3>
-            <p className="text-blue-900/80 leading-relaxed">{project.businessValue}</p>
+            <div className="text-blue-900/80 leading-relaxed">
+              {Array.isArray(project.businessValue) ? (
+                project.businessValue.map((item, index) => {
+                  // 1. Jika kalimat berakhiran titik dua (:) -> Jadikan Judul Section
+                  if (item.trim().endsWith(':')) {
+                    return <h4 key={index} className="font-bold text-blue-900 mt-5 mb-2">{item}</h4>;
+                  }
+                  // 2. Jika kalimat mengandung titik dua (:) di tengah -> Jadikan List Poin
+                  if (item.includes(':') && index > 1) {
+                    const [boldPart, ...restPart] = item.split(':');
+                    return (
+                      <div key={index} className="flex items-start mb-2 ml-2 md:ml-4">
+                        <span className="mr-2.5 text-blue-500 font-bold mt-0.5">✓</span>
+                        <p><strong className="text-blue-900">{boldPart}:</strong>{restPart.join(':')}</p>
+                      </div>
+                    );
+                  }
+                  // 3. Kalimat biasa -> Jadikan Paragraf
+                  return <p key={index} className="mb-3">{item}</p>;
+                })
+              ) : (
+                <p>{project.businessValue}</p>
+              )}
+            </div>
           </div>
         </div>
         <div className="space-y-8">
@@ -742,28 +791,104 @@ function ProjectDetailView({ project, onBack }) {
           )}
           <section className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 text-left">
             <h2 className="text-2xl font-bold text-slate-900 mb-4 border-b pb-4">Latar Belakang</h2>
-            <p className="text-slate-600 leading-relaxed text-lg">{project.background}</p>
+            {/* <p className="text-slate-600 leading-relaxed text-lg">{project.background}</p> */}
+            <div className="text-slate-600 leading-relaxed text-lg">
+              {Array.isArray(project.background) ? (
+                project.background.map((item, index) => {
+                  // 1. Jika kalimat berakhiran titik dua (:) -> Jadikan Judul Section
+                  if (item.trim().endsWith(':')) {
+                    return <h4 key={index} className="font-bold text-slate-900 mt-5 mb-2">{item}</h4>;
+                  }
+                  // 2. Jika kalimat mengandung titik dua (:) di tengah -> Jadikan List Poin
+                  if (item.includes(':') && index > 1) {
+                    const [boldPart, ...restPart] = item.split(':');
+                    return (
+                      <div key={index} className="flex items-center mb-2 ml-2 md:ml-4">
+                        <span className="mr-2.5 text-slate-500 font-bold mt-0.5">✓</span>
+                        <p><strong className="text-slate-900">{boldPart}:</strong>{restPart.join(':')}</p>
+                      </div>
+                    );
+                  }
+                  // 3. Kalimat biasa -> Jadikan Paragraf
+                  return <p key={index} className="mb-3">{item}</p>;
+                })
+              ) : (
+                <p>{project.background}</p>
+              )}
+            </div>
           </section>
           <section className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 text-left">
             <h2 className="text-2xl font-bold text-slate-900 mb-6 border-b pb-4">Langkah Implementasi</h2>
             <ul className="space-y-4">
-              {project.implementation.map((step, idx) => (
-                <li key={idx} className="flex items-start">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-slate-100 text-slate-500 font-bold flex items-center justify-center mr-4">{idx + 1}</div>
-                  <p className="text-slate-700 pt-1 text-lg">{step}</p>
-                </li>
-              ))}
+              {project.implementation.map((step, idx) => {
+                // Logika pemisahan teks berdasarkan titik dua (:)
+                const hasColon = step.includes(':');
+                let boldPart = '';
+                let restPart = '';
+
+                if (hasColon) {
+                  const parts = step.split(':');
+                  boldPart = parts[0];
+                  restPart = parts.slice(1).join(':'); // Gabungkan kembali jika ada titik dua lain di sisa kalimat
+                }
+
+                return (
+                  <li key={idx} className="flex items-center">
+                    {/* Lingkaran Angka */}
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center mr-4 mt-0.5 border border-blue-200">
+                      {idx + 1}
+                    </div>
+                    {/* Teks Implementasi */}
+                    <div className="text-slate-700 text-lg leading-relaxed">
+                      {hasColon ? (
+                        <p>
+                          <strong className="text-slate-900">{boldPart}:</strong>
+                          {restPart}
+                        </p>
+                      ) : (
+                        <p>{step}</p>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </section>
           <section className="bg-slate-900 rounded-2xl p-8 shadow-lg text-left">
             <h2 className="text-2xl font-bold text-white mb-6 border-b border-slate-700 pb-4">Hasil & Pencapaian</h2>
-            <div className="grid gap-4">
+            {/* <div className="grid gap-4">
               {project.results.map((res, idx) => (
                 <div key={idx} className="flex items-start">
                   <CheckCircle className="w-6 h-6 text-green-400 mr-3 mt-0.5" />
                   <p className="text-slate-200 text-lg leading-relaxed">{res}</p>
                 </div>
               ))}
+            </div> */}
+            <div className="grid gap-4">
+              {Array.isArray(project.results) ? (
+                project.results.map((item, index) => {
+                  // 1. Jika kalimat berakhiran titik dua (:) -> Jadikan Judul Section
+                  if (item.trim().endsWith(':')) {
+                    return <h4 key={index} className="text-slate-200 text-lg leading-relaxed">{item}</h4>;
+                  }
+                  // 2. Jika kalimat mengandung titik dua (:) di tengah -> Jadikan List Poin
+                  if (item.includes(':') && index > 1) {
+                    const [boldPart, ...restPart] = item.split(':');
+                    return (
+                      <div key={index} className="flex items-start mb-2 ml-2 md:ml-4">
+                        <CheckCircle className="w-6 h-6 text-green-400 mr-3 mt-0.5" />
+                        {/* <span className="mr-2.5 text-blue-500 font-bold mt-0.5">✓</span> */}
+                        {/* <p><strong className="text-slate-200 text-lg leading-relaxed">{boldPart}:</strong>{restPart.join(':')}</p> */}
+                        <p><strong className="text-slate-200 text-lg leading-relaxed">{boldPart}:</strong><span className="text-slate-200 text-lg leading-relaxed"> {restPart.join(':')}</span></p>
+                      </div>
+                    );
+                  }
+                  // 3. Kalimat biasa -> Jadikan Paragraf
+                  return <p key={index} className="text-slate-200 text-lg leading-relaxed">{item}</p>;
+                })
+              ) : (
+                <p>{project.results}</p>
+              )}
             </div>
           </section>
         </div>
