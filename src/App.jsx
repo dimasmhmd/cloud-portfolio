@@ -74,24 +74,23 @@ const projectsData = [
   },
   {
     id: 'copilot-studio',
-    title: 'Enterprise AI Assistant via Copilot Studio',
+    title: 'Enterprise AI Assistant',
     category: 'AI & Automation',
-    shortDesc: 'Integrasi agen AI cerdas untuk otomasi dukungan IT internal dan layanan mandiri (self-service) karyawan menggunakan Microsoft Copilot Studio.',
+    shortDesc: 'Integrasi agen AI cerdas untuk otomasi dukungan IT dan layanan mandiri (self-service).',
     tech: ['Copilot Studio', 'Power Automate', 'Azure OpenAI'],
     businessValue: 'Mengurangi volume tiket IT Helpdesk Level 1 hingga 60% dan mempercepat resolusi masalah dari hitungan jam menjadi detik.',
-    background: 'Tim IT Helpdesk kewalahan menangani pertanyaan berulang (reset password, akses VPN, panduan software) yang menghabiskan waktu engineer tingkat lanjut.',
-    architecture: 'Bot AI dibangun di Copilot Studio, diintegrasikan dengan Azure AD untuk autentikasi SSO, dan menggunakan Power Automate untuk mengeksekusi aksi backend (seperti mereset AD password) berdasarkan trigger percakapan.',
+    background: 'Tim IT Helpdesk kewalahan menangani pertanyaan berulang yang menghabiskan waktu engineer tingkat lanjut.',
+    architecture: 'Bot AI dibangun, diintegrasikan dengan Azure dan menggunakan Power Automate untuk memberikan output berdasarkan trigger percakapan.',
     implementation: [
-      'Identifikasi top 10 keluhan IT Helpdesk dari data historis.',
       'Desain alur percakapan (dialog tree) dan integrasi Generative AI fallback.',
       'Pembuatan alur Power Automate untuk integrasi sistem on-premise.',
-      'Deployment chatbot ke platform Microsoft Teams perusahaan.',
+      'Deployment chatbot ke platform perusahaan.',
       'Pelatihan dan fine-tuning model bahasa berbasis dokumen SOP perusahaan.'
     ],
     results: [
-      'Tingkat penyelesaian masalah mandiri karyawan mencapai 65%.',
-      'Peningkatan kepuasan pengguna internal dengan ketersediaan layanan 24/7.',
-      'Integrasi aman dan mulus dalam ekosistem Microsoft Teams.'
+      'Tingkat penyelesaian masalah user level 1 mencapai 65%.',
+      'Peningkatan kepuasan pengguna dengan ketersediaan layanan 24/7.',
+      'Integrasi aman dan mulus dalam ekosistem perusahaan.'
     ]
   },
   {
@@ -201,10 +200,10 @@ function HomeView({ onSelectProject }) {
             <div>
               <h2 className="text-3xl font-bold text-slate-900 mb-6">Professional IT & Cloud Consultant</h2>
               <p className="text-slate-600 text-lg mb-6 leading-relaxed">
-                Dengan pengalaman mendalam dalam merancang dan mengimplementasikan arsitektur IT modern, saya membantu perusahaan menjembatani kesenjangan antara infrastruktur lokal (on-premise) dan skalabilitas cloud awan.
+                Dengan pengalaman mendalam dalam merancang dan mengimplementasikan arsitektur IT modern, kami membantu perusahaan menjembatani kesenjangan antara infrastruktur lokal (on-premise) dan skalabilitas cloud.
               </p>
               <p className="text-slate-600 text-lg mb-8 leading-relaxed">
-                Fokus utama saya adalah memastikan keamanan jaringan, ketersediaan data tinggi (High Availability), dan efisiensi operasional sistem mission-critical bisnis Anda.
+                Fokus utama kami adalah memastikan keamanan jaringan, ketersediaan data tinggi (High Availability), dan efisiensi operasional sistem mission-critical bisnis Anda.
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 bg-slate-50 border border-slate-100 rounded-lg">
@@ -488,10 +487,10 @@ function Footer() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-center items-center gap-2 mb-4">
           <Cloud className="w-6 h-6 text-slate-500" />
-          <span className="font-bold text-lg text-slate-300">CloudArchitect.</span>
+          <span className="font-bold text-lg text-slate-300">Data & AI Solution.</span>
         </div>
         <p className="text-sm mb-2">
-          © {new Date().getFullYear()} Cloud & Infrastructure Engineering Portfolio.
+          © {new Date().getFullYear()} Data & AI Solution Portfolio.
         </p>
         <p className="text-xs text-slate-600">
           Solusi IT Skala Enterprise • Microsoft Azure • Keamanan Terintegrasi
