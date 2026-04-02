@@ -153,7 +153,7 @@ function HomeView({ onSelectProject }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <Cloud className="w-8 h-8 text-blue-600" />
-            <span className="font-bold text-xl tracking-tight text-slate-900">CloudArchitect.</span>
+            <span className="font-bold text-xl tracking-tight text-slate-900">Data & AI Solution.</span>
           </div>
           <div className="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
             <a href="#about" className="hover:text-blue-600 transition-colors">Tentang</a>
@@ -178,7 +178,7 @@ function HomeView({ onSelectProject }) {
               <Shield className="w-4 h-4" /> Enterprise-Grade IT Solutions
             </div>
             <h1 className="text-4xl lg:text-6xl font-extrabold text-white tracking-tight mb-6 leading-tight">
-              Cloud & Data Engineering <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Portfolio</span>
+              Data & AI Solution <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Portfolio</span>
             </h1>
             <p className="text-lg text-slate-300 mb-10 leading-relaxed">
               Membangun infrastruktur Hybrid Cloud, Solusi Data terukur, dan Automasi modern di ekosistem Microsoft Azure untuk mendorong efisiensi bisnis skala enterprise.
