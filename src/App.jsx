@@ -522,7 +522,8 @@ function HomeView({ onSelectProject }) {
       <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2 text-blue-600 font-bold text-xl tracking-tight">
-            <Cloud className="w-8 h-8" /> Data & AI Solution.
+            {/* <Cloud className="w-8 h-8" /> Data & AI Solution. */}
+            <img src="/Intikom-Logo.png" alt="Logo" width="150" />
           </div>
           <div className="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
             <a href="#about" className="hover:text-blue-600 transition-colors">Tentang</a>
