@@ -1,31 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Server, Database, Shield, Cloud, Activity, Code, 
   ChevronRight, ArrowLeft, Mail, Link, ExternalLink,
-  Layers, Lock, Cpu, Globe, CheckCircle
+  Layers, Lock, Cpu, Globe, CheckCircle, Image as ImageIcon,
+  Maximize, Minimize, Play, ChevronLeft, Film
 } from 'lucide-react';
 
+// ==========================================
+// DATA PROYEK (DENGAN TEMA ENTERPRISE)
+// ==========================================
 const projectsData = [
   {
     id: 'hybrid-vm',
     title: 'Implementasi Hybrid Scenario: Integrasi On-Premise & Azure VM',
     category: 'Cloud Infrastructure',
-    shortDesc: 'Membangun terowongan aman (VPN Site-to-Site) untuk memperluas kapasitas komputasi on-premise ke Microsoft Azure secara seamless tanpa mengorbankan keamanan.',
+    shortDesc: 'Membangun jalur aman (VPN Site-to-Site) untuk memperluas kapasitas komputasi on-premise ke Microsoft Azure secara seamless tanpa mengorbankan keamanan.',
     tech: ['Azure VM', 'VPN Gateway', 'VNet', 'NSG'],
     businessValue: 'Merubah model CAPEX ke OPEX, memangkas waktu provisi server dari berminggu-minggu menjadi 15 menit.',
     background: 'Kapasitas pusat data lokal klien (institusi finansial) telah mencapai batas maksimal. Kebutuhan akan skalabilitas mendadak di akhir bulan memerlukan solusi komputasi yang elastis tanpa mengekspos aplikasi internal ke internet publik.',
     architecture: 'Infrastruktur menggunakan Azure Virtual Network (VNet) yang terhubung ke router lokal via Azure VPN Gateway (IPsec/IKEv2). VM di Azure diisolasi menggunakan Network Security Group (NSG) dan hanya dapat diakses melalui alamat IP privat dari intranet perusahaan.',
+    
+    slides: [
+      // {
+      //   type: 'cover',
+      //   title: 'Hybrid Cloud Integration',
+      //   subtitle: 'Meruntuhkan Batasan Infrastruktur Tradisional menuju Skalabilitas Tanpa Batas',
+      //   bgVideo: 'https://www.w3schools.com/html/mov_bbb.mp4' 
+      // },
+      // {
+      //   type: 'content',
+      //   title: 'Tantangan Bisnis Saat Ini',
+      //   bullets: [
+      //     'Kapasitas Data Center lokal (On-Premise) telah mencapai ambang batas kritis (95%).',
+      //     'Proses pengadaan perangkat keras fisik memakan waktu 3-4 minggu.',
+      //     'Kebutuhan skalabilitas instan saat terjadi lonjakan transaksi pengguna di akhir bulan.',
+      //     'Regulasi ketat perbankan yang mewajibkan isolasi data dari internet publik.'
+      //   ]
+      // },
+      // {
+      //   type: 'media',
+      //   url: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop',
+      //   caption: 'Topologi Jaringan Terenkripsi (IPsec VPN Tunneling)',
+      //   fit: 'contain'
+      // },
+      // {
+      //   type: 'content',
+      //   title: 'Hasil & Dampak Transformasi',
+      //   bullets: [
+      //     'Agilitas Tinggi: Waktu provisi Virtual Machine baru turun drastis dari 21 hari menjadi hanya 15 menit.',
+      //     'Efisiensi Finansial: Berhasil bertransisi dari model investasi CAPEX menjadi langganan OPEX yang terukur.',
+      //     'Keamanan Terjamin: 100% lalu lintas data berjalan di jalur terenkripsi (End-to-End) tanpa terekspos keluar.',
+      //     'Uptime Tinggi: SLA jaringan internal tercapai di angka 99.9%.'
+      //   ]
+      // }
+    ],
+    
     implementation: [
-      'Desain topologi jaringan dan IP addressing untuk mencegah overlapping.',
-      'Deployment Azure VPN Gateway dan konfigurasi Local Network Gateway.',
-      'Provisi Azure Virtual Machines (Windows/Linux) pada workload subnet khusus.',
-      'Penerapan kebijakan firewall zero-trust menggunakan NSG.',
-      'Validasi latensi (< 20ms) dan stabilitas tunnel.'
+      'Desain topologi jaringan dan IP addressing untuk mencegah overlapping antara on-premise dan cloud.',
+      'Deployment Azure VPN Gateway dan konfigurasi Local Network Gateway di portal Azure.',
+      'Provisi Azure Virtual Machines (Windows/Linux) pada workload subnet khusus yang terisolasi.',
+      'Penerapan kebijakan firewall zero-trust menggunakan Azure Network Security Group (NSG).',
+      'Validasi latensi tunnel (< 20ms) dan uji penetrasi keamanan.'
     ],
     results: [
-      'Konektivitas jaringan internal 99.9% uptime dengan throughput tinggi.',
+      'Konektivitas jaringan internal 99.9% uptime dengan throughput stabil.',
       'Peningkatan kelincahan operasional (Agility) tim developer.',
-      'Kepatuhan terhadap regulasi perbankan mengenai isolasi data.'
+      'Lolos audit kepatuhan (compliance) regulasi keamanan data.'
     ]
   },
   {
@@ -37,6 +77,7 @@ const projectsData = [
     businessValue: 'Mengurangi beban operasional pemeliharaan database (patching, backup) hingga 40%, memungkinkan fokus pada optimasi query bisnis.',
     background: 'Sistem ERP klien berjalan di atas SQL Server on-premise versi lama yang mendekati End-of-Support. Klien membutuhkan modernisasi ke cloud namun mempertahankan kompatibilitas 100% dengan mesin SQL Server untuk menghindari penulisan ulang aplikasi.',
     architecture: 'Menggunakan arsitektur Hub-and-Spoke. Azure SQL Managed Instance (MI) di-deploy ke dalam subnet terisolasi (dedicated subnet). Koneksi dari aplikasi legacy di Azure VM dirutekan secara privat tanpa public endpoint.',
+    slides: [], 
     implementation: [
       'Assessment kompatibilitas data menggunakan Data Migration Assistant (DMA).',
       'Deployment Azure SQL Managed Instance pada VNet terisolasi.',
@@ -59,6 +100,7 @@ const projectsData = [
     businessValue: 'Mencapai target RTO (Recovery Time Objective) < 1 jam dan RPO (Recovery Point Objective) < 5 detik untuk sistem transaksi inti.',
     background: 'Sebagai perusahaan ritel nasional, downtime sistem inventori selama 1 jam dapat menyebabkan kerugian ratusan juta rupiah. Sistem lama tidak memiliki failover site yang memadai.',
     architecture: 'Implementasi Azure SQL MI di dua region berbeda (misal: Southeast Asia dan East Asia) menggunakan fitur Auto-failover groups. Azure Traffic Manager digunakan pada layer aplikasi untuk mengarahkan lalu lintas pengguna.',
+    slides: [],
     implementation: [
       'Provisi instance primer dan sekunder di region yang berpasangan.',
       'Konfigurasi Auto-failover group dengan kebijakan read-write listener.',
@@ -80,15 +122,34 @@ const projectsData = [
     tech: ['Copilot Studio', 'Power Automate', 'Azure OpenAI'],
     businessValue: 'Mengurangi volume tiket IT Helpdesk Level 1 hingga 60% dan mempercepat resolusi masalah dari hitungan jam menjadi detik.',
     background: 'Tim IT Helpdesk kewalahan menangani pertanyaan berulang yang menghabiskan waktu engineer tingkat lanjut.',
-    architecture: 'Bot AI dibangun, diintegrasikan dengan Azure dan menggunakan Power Automate untuk memberikan output berdasarkan trigger percakapan.',
+    architecture: 'Bot AI dibangun, diintegrasikan dengan Azure dan menggunakan Power Automate untuk memberikan informasi berdasarkan trigger percapapan.',
+    
+    slides: [
+      { type: 'media', url: '/chatbot/slide1.png', fit: 'contain' },
+      { type: 'media', url: '/chatbot/slide2.png', fit: 'contain' },
+      { type: 'media', url: '/chatbot/slide3.png', fit: 'contain' },
+      { type: 'media', url: '/chatbot/slide4.png', fit: 'contain' },
+      { type: 'media', url: '/chatbot/slide5.png', fit: 'contain' },
+      { type: 'media', url: '/chatbot/slide6.png', fit: 'contain' },
+      { type: 'media', url: '/chatbot/slide7.png', fit: 'contain' },
+      { type: 'media', url: '/chatbot/slide8.png', fit: 'contain' },
+      { 
+        type: 'media', 
+        url: '/chatbot/demo.mp4', // PERBAIKAN: Gunakan kunci 'url', bukan 'bgVideo' untuk tipe media
+        caption: 'Video Demonstrasi Fitur AI Chatbot' 
+      },
+      { type: 'media', url: '/chatbot/slide9.png', fit: 'contain' },
+    ],
+
     implementation: [
+      'Identifikasi keluhan IT Helpdesk dari data historis.',
       'Desain alur percakapan (dialog tree) dan integrasi Generative AI fallback.',
-      'Pembuatan alur Power Automate untuk integrasi sistem on-premise.',
+      'Pembuatan alur Power Automate untuk integrasi sistem.',
       'Deployment chatbot ke platform perusahaan.',
       'Pelatihan dan fine-tuning model bahasa berbasis dokumen SOP perusahaan.'
     ],
     results: [
-      'Tingkat penyelesaian masalah user level 1 mencapai 65%.',
+      'Tingkat penyelesaian masalah mandiri mencapai 60%.',
       'Peningkatan kepuasan pengguna dengan ketersediaan layanan 24/7.',
       'Integrasi aman dan mulus dalam ekosistem perusahaan.'
     ]
@@ -102,6 +163,7 @@ const projectsData = [
     businessValue: 'Menyediakan platform analitik terpusat yang aman, mendorong budaya pengambilan keputusan berbasis data di seluruh departemen C-Level.',
     background: 'Klien membutuhkan platform Business Intelligence (BI) mandiri yang mematuhi standar privasi data yang ketat, yang tidak dapat dipenuhi oleh solusi SaaS publik.',
     architecture: 'Arsitektur cluster multi-node Tableau Server di atas Azure Virtual Machine berskala besar. Dilindungi oleh Azure Application Gateway (WAF) dan terintegrasi dengan Azure Active Directory untuk SSO SAML.',
+    slides: [],
     implementation: [
       'Sizing spesifikasi Azure VM untuk node Primer, Pekerja (Worker), dan Backgrounder.',
       'Instalasi dan inisialisasi Tableau Server dalam mode cluster.',
@@ -117,6 +179,315 @@ const projectsData = [
   }
 ];
 
+// ==========================================
+// KOMPONEN: PRESENTATION SLIDER
+// ==========================================
+function PresentationSlider({ slides }) {
+  const [isIdle, setIsIdle] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isNativeFullscreen, setIsNativeFullscreen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  
+  const containerRef = useRef(null);
+  
+  const nextSlide = () => setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+  const prevSlide = () => setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+
+  // Fungsi pembantu untuk cek apakah URL adalah video
+  const isVideo = (url) => {
+    if (!url) return false;
+    return url.match(/\.(mp4|webm|ogg)$/i) || url.includes('w3schools.com/html/');
+  };
+
+  // Keyboard navigation & Escape key handling
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowRight') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'Escape' && isFullscreen && !isNativeFullscreen) {
+        setIsFullscreen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [slides.length, isFullscreen, isNativeFullscreen]);
+
+  // Auto-hide navigation
+  useEffect(() => {
+    let timeout;
+    const resetIdle = () => {
+      setIsIdle(false);
+      clearTimeout(timeout);
+      timeout = setTimeout(() => setIsIdle(true), 3000);
+    };
+
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener('mousemove', resetIdle);
+      container.addEventListener('touchstart', resetIdle);
+      container.addEventListener('keydown', resetIdle);
+      resetIdle();
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('mousemove', resetIdle);
+        container.removeEventListener('touchstart', resetIdle);
+        container.removeEventListener('keydown', resetIdle);
+      }
+      clearTimeout(timeout);
+    };
+  }, []);
+
+  // Scroll lock saat fullscreen palsu (CSS fallback)
+  useEffect(() => {
+    if (isFullscreen && !isNativeFullscreen) {
+      document.body.style.overflow = 'hidden'; 
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+      document.documentElement.style.overflow = 'unset';
+    }
+    return () => { 
+      document.body.style.overflow = 'unset'; 
+      document.documentElement.style.overflow = 'unset';
+    };
+  }, [isFullscreen, isNativeFullscreen]);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const isActive = !!document.fullscreenElement;
+      setIsNativeFullscreen(isActive);
+      setIsFullscreen(isActive);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
+  const toggleFullscreen = async () => {
+    if (!isFullscreen) {
+      try {
+        if (containerRef.current?.requestFullscreen) {
+          await containerRef.current.requestFullscreen();
+        } else {
+          setIsFullscreen(true);
+        }
+      } catch (err) {
+        console.warn("Native Fullscreen diblokir. Mengaktifkan CSS Fallback.");
+        setIsFullscreen(true); 
+      }
+    } else {
+      try {
+        if (document.fullscreenElement && document.exitFullscreen) {
+          await document.exitFullscreen();
+        } else {
+          setIsFullscreen(false);
+        }
+      } catch (err) {
+        setIsFullscreen(false);
+      }
+    }
+  };
+
+  const customStyles = `
+    .idle-hide { opacity: 0 !important; transition: opacity 0.5s ease-in-out !important; pointer-events: none; }
+    .idle-show { opacity: 1 !important; transition: opacity 0.3s ease-in-out !important; }
+    
+    .custom-slide-active .bullet-anim {
+      opacity: 0;
+      transform: translateX(-30px);
+      animation: slideRightFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    
+    .custom-slide-active .bullet-anim:nth-child(1) { animation-delay: 0.2s; }
+    .custom-slide-active .bullet-anim:nth-child(2) { animation-delay: 0.4s; }
+    .custom-slide-active .bullet-anim:nth-child(3) { animation-delay: 0.6s; }
+    .custom-slide-active .bullet-anim:nth-child(4) { animation-delay: 0.8s; }
+    .custom-slide-active .bullet-anim:nth-child(5) { animation-delay: 1.0s; }
+
+    @keyframes slideRightFade {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes gradientPan {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .tech-gradient {
+      background: linear-gradient(-45deg, #020617, #1e3a8a, #0f172a, #0284c7);
+      background-size: 300% 300%;
+      animation: gradientPan 12s ease infinite;
+    }
+
+    .slide-scroll::-webkit-scrollbar { width: 6px; }
+    .slide-scroll::-webkit-scrollbar-track { background: transparent; }
+    .slide-scroll::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+  `;
+
+  if (!slides || slides.length === 0) return null;
+
+  return (
+    <div 
+      ref={containerRef}
+      id="presentation-container"
+      className={`relative overflow-hidden bg-slate-950 transition-all duration-300 ease-in-out ${
+        isNativeFullscreen
+          ? 'w-full h-full rounded-none border-none' 
+          : isFullscreen
+            ? '!fixed !inset-0 !z-[99999] !w-screen !h-[100dvh] !m-0 !p-0 !rounded-none !border-none' 
+            : 'aspect-[16/10] md:aspect-video w-full mt-8 rounded-2xl border border-slate-800 shadow-2xl group'
+      }`}
+    >
+      <style>{customStyles}</style>
+
+      {/* Tombol Fullscreen */}
+      <button 
+        onClick={toggleFullscreen}
+        className={`absolute top-4 right-4 z-[100000] p-2.5 bg-slate-900/60 border border-slate-700 hover:bg-blue-600 hover:border-blue-400 rounded-lg text-white backdrop-blur-md transition-all shadow-lg ${isIdle ? 'idle-hide' : 'idle-show'}`}
+        title={isFullscreen ? "Keluar Fullscreen (Esc)" : "Mulai Fullscreen"}
+      >
+        {isFullscreen ? <Minimize className="w-5 h-5" /> : <Maximize className="w-5 h-5" />}
+      </button>
+
+      {/* Kontainer Utama Slide */}
+      <div className="w-full h-full relative" onTouchStart={(e) => {
+        const touch = e.touches[0];
+        containerRef.current.startX = touch.clientX;
+      }} onTouchEnd={(e) => {
+        const touch = e.changedTouches[0];
+        const diffX = containerRef.current.startX - touch.clientX;
+        if (diffX > 50) nextSlide();
+        if (diffX < -50) prevSlide();
+      }}>
+        {slides.map((slide, index) => {
+          const isActive = index === currentIndex;
+          return (
+            <div 
+              key={index} 
+              className={`absolute inset-0 w-full h-full bg-slate-950 transition-opacity duration-700 ease-in-out ${isActive ? 'opacity-100 z-10 custom-slide-active' : 'opacity-0 z-0 pointer-events-none'}`}
+            >
+              <div className="w-full h-full flex items-center justify-center relative">
+                
+                {/* === TIPE 1: COVER SLIDE === */}
+                {slide.type === 'cover' && (
+                  <div className="w-full h-full relative flex flex-col items-center justify-center text-center p-8 tech-gradient overflow-hidden">
+                    {slide.bgVideo && (
+                      <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-lighten">
+                        <source src={slide.bgVideo} type="video/mp4" />
+                      </video>
+                    )}
+                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
+                    
+                    <div className="relative z-10 max-w-5xl px-4">
+                      <div className={`transition-all duration-1000 transform ${isActive ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-blue-500/20 border border-blue-400/40 text-blue-300 text-xs md:text-sm font-bold tracking-widest uppercase mb-8 backdrop-blur-md shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+                          <Play className="w-4 h-4 fill-blue-300" /> Executive Pitch Deck
+                        </div>
+                        <h2 className="text-3xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight drop-shadow-2xl">
+                          {slide.title}
+                        </h2>
+                        <div className="w-24 h-1.5 bg-blue-500 mx-auto rounded-full mb-8 shadow-[0_0_15px_rgba(59,130,246,0.6)]"></div>
+                        <p className="text-base md:text-2xl text-blue-100 font-light drop-shadow-md max-w-3xl mx-auto leading-relaxed">
+                          {slide.subtitle}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* === TIPE 2: CONTENT === */}
+                {slide.type === 'content' && (
+                  <div className="w-full h-full flex flex-col justify-center p-8 md:p-20 lg:p-24 relative slide-scroll">
+                    <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+                    <div className="relative z-10 max-w-5xl w-full mx-auto text-left">
+                      <h2 className={`text-2xl md:text-5xl font-bold text-white mb-10 border-l-4 border-blue-500 pl-6 transition-all duration-700 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
+                        {slide.title}
+                      </h2>
+                      <ul className="space-y-5 md:space-y-8">
+                        {slide.bullets?.map((bullet, idx) => (
+                          <li key={idx} className="bullet-anim flex items-start text-base md:text-2xl text-slate-300 font-light bg-slate-900/40 p-4 md:p-6 rounded-xl border border-slate-800/50 backdrop-blur-sm shadow-xl">
+                            <span className="mr-4 md:mr-5 text-blue-500 mt-1 md:mt-0 text-xl md:text-2xl">▹</span>
+                            <span className="leading-relaxed">{bullet}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+
+                {/* === TIPE 3: MEDIA (DENGAN PERBAIKAN VIDEO) === */}
+                {slide.type === 'media' && (
+                  <div className="w-full h-full bg-slate-950 relative flex flex-col items-center justify-center overflow-hidden">
+                    {isVideo(slide.url) ? (
+                      <video 
+                        key={slide.url} // Re-render saat slide aktif atau URL berubah
+                        autoPlay 
+                        loop 
+                        muted 
+                        playsInline 
+                        className={`w-full h-full transition-all duration-1000 ${slide.fit === 'cover' ? 'object-cover' : 'object-contain'} ${isActive ? 'scale-100 opacity-100' : 'scale-105 opacity-0'}`}
+                      >
+                        <source src={slide.url} type="video/mp4" />
+                        Browser tidak mendukung video.
+                      </video>
+                    ) : (
+                      <img 
+                        src={slide.url} 
+                        alt={slide.caption}
+                        className={`w-full h-full transition-all duration-1000 ${slide.fit === 'cover' ? 'object-cover' : 'object-contain'} ${isActive ? 'scale-100 opacity-100' : 'scale-105 opacity-0'}`}
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'flex';
+                        }}
+                      />
+                    )}
+                    
+                    <div className="absolute inset-0 hidden flex-col items-center justify-center text-slate-500 bg-slate-900 border-2 border-dashed border-slate-700">
+                       {isVideo(slide.url) ? <Film className="w-16 h-16 mb-4 opacity-50" /> : <ImageIcon className="w-16 h-16 mb-4 opacity-50" />}
+                       <span className="text-lg font-medium">Media Tidak Ditemukan</span>
+                       <span className="text-sm font-mono text-slate-600 mt-2 text-center px-4">{slide.url}</span>
+                    </div>
+                    
+                    {slide.caption && (
+                      <div className={`absolute bottom-6 md:bottom-12 px-6 py-2.5 md:px-8 md:py-3.5 bg-slate-900/80 backdrop-blur-md border border-slate-700/80 rounded-full transition-all duration-700 delay-500 shadow-xl z-20 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                        <p className="text-slate-200 font-medium tracking-wide text-xs md:text-base">{slide.caption}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Navigasi Panah */}
+      <button onClick={prevSlide} className={`absolute left-4 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-slate-900/60 border border-slate-700 text-white backdrop-blur-md transition-all shadow-lg ${isIdle ? 'idle-hide md:opacity-0' : 'idle-show md:opacity-100'}`}>
+        <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
+      </button>
+      <button onClick={nextSlide} className={`absolute right-4 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-slate-900/60 border border-slate-700 text-white backdrop-blur-md transition-all shadow-lg ${isIdle ? 'idle-hide md:opacity-0' : 'idle-show md:opacity-100'}`}>
+        <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
+      </button>
+
+      {/* Pagination Dots */}
+      <div className={`absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 bg-slate-900/50 backdrop-blur-md px-5 py-2.5 rounded-full border border-slate-700/50 ${isIdle ? 'idle-hide' : 'idle-show'}`}>
+        {slides.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => setCurrentIndex(idx)}
+            className={`transition-all duration-300 rounded-full ${currentIndex === idx ? 'w-4 h-4 bg-blue-500 scale-110 shadow-lg' : 'w-2.5 h-2.5 bg-slate-400 hover:bg-slate-300'}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ==========================================
+// KOMPONEN UTAMA (LAYOUT & FOOTER)
+// ==========================================
 export default function App() {
   const [currentView, setCurrentView] = useState('home');
   const [selectedProject, setSelectedProject] = useState(null);
@@ -134,7 +505,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
       {currentView === 'home' ? (
         <HomeView onSelectProject={navigateToProject} />
       ) : (
@@ -150,46 +521,36 @@ function HomeView({ onSelectProject }) {
     <main>
       <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <Cloud className="w-8 h-8 text-blue-600" />
-            <span className="font-bold text-xl tracking-tight text-slate-900">Data & AI Solution.</span>
+          <div className="flex items-center gap-2 text-blue-600 font-bold text-xl tracking-tight">
+            <Cloud className="w-8 h-8" /> Data & AI Solution.
           </div>
           <div className="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
             <a href="#about" className="hover:text-blue-600 transition-colors">Tentang</a>
             <a href="#portfolio" className="hover:text-blue-600 transition-colors">Portofolio Proyek</a>
             <a href="#expertise" className="hover:text-blue-600 transition-colors">Keahlian</a>
-            <a href="#contact" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-              Hubungi Saya
-            </a>
+            <a href="#contact" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">Hubungi Kami</a>
           </div>
         </div>
       </nav>
 
-      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 bg-slate-900 overflow-hidden">
+      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 bg-slate-900 overflow-hidden text-center">
         <div className="absolute inset-0 z-0 opacity-20">
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-700 via-slate-900 to-slate-900"></div>
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
         </div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/20 text-blue-400 text-sm font-medium mb-6">
-              <Shield className="w-4 h-4" /> Enterprise-Grade IT Solutions
-            </div>
-            <h1 className="text-4xl lg:text-6xl font-extrabold text-white tracking-tight mb-6 leading-tight">
-              Data & AI Solution <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Portfolio</span>
-            </h1>
-            <p className="text-lg text-slate-300 mb-10 leading-relaxed">
-              Membangun infrastruktur Hybrid Cloud, Solusi Data terukur, dan Automasi modern di ekosistem Microsoft Azure untuk mendorong efisiensi bisnis skala enterprise.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="#portfolio" className="inline-flex items-center justify-center px-8 py-3.5 text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-500 transition-all shadow-lg shadow-blue-500/30">
-                Lihat Proyek <ChevronRight className="ml-2 w-5 h-5" />
-              </a>
-              <a href="#contact" className="inline-flex items-center justify-center px-8 py-3.5 text-base font-medium rounded-lg text-slate-300 bg-slate-800 border border-slate-700 hover:bg-slate-700 hover:text-white transition-all">
-                Jadwalkan Konsultasi
-              </a>
-            </div>
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/20 text-blue-400 text-sm font-medium mb-6">
+            <Shield className="w-4 h-4" /> Enterprise-Grade IT Solutions
+          </div>
+          <h1 className="text-4xl lg:text-6xl font-extrabold text-white tracking-tight mb-6 leading-tight">
+            Data & AI Solution <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Portfolio</span>
+          </h1>
+          <p className="text-lg text-slate-300 mb-10 leading-relaxed max-w-2xl mx-auto">
+            Membangun infrastruktur Hybrid Cloud, Solusi Data terukur, dan Automasi modern di ekosistem Microsoft Azure untuk mendorong efisiensi bisnis skala enterprise.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#portfolio" className="inline-flex items-center justify-center px-8 py-3.5 text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-500 transition-all shadow-lg shadow-blue-500/30">Lihat Proyek <ChevronRight className="ml-2 w-5 h-5" /></a>
           </div>
         </div>
       </section>
@@ -200,10 +561,10 @@ function HomeView({ onSelectProject }) {
             <div>
               <h2 className="text-3xl font-bold text-slate-900 mb-6">Professional IT & Cloud Consultant</h2>
               <p className="text-slate-600 text-lg mb-6 leading-relaxed">
-                Dengan pengalaman mendalam dalam merancang dan mengimplementasikan arsitektur IT modern, kami membantu perusahaan menjembatani kesenjangan antara infrastruktur lokal (on-premise) dan skalabilitas cloud.
+                Dengan pengalaman mendalam dalam merancang dan mengimplementasikan arsitektur IT modern, saya membantu perusahaan menjembatani kesenjangan antara infrastruktur lokal (on-premise) dan skalabilitas cloud awan.
               </p>
               <p className="text-slate-600 text-lg mb-8 leading-relaxed">
-                Fokus utama kami adalah memastikan keamanan jaringan, ketersediaan data tinggi (High Availability), dan efisiensi operasional sistem mission-critical bisnis Anda.
+                Fokus utama saya adalah memastikan keamanan jaringan, ketersediaan data tinggi (High Availability), dan efisiensi operasional sistem mission-critical bisnis Anda.
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 bg-slate-50 border border-slate-100 rounded-lg">
@@ -255,41 +616,24 @@ function HomeView({ onSelectProject }) {
       <section id="portfolio" className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">Studi Kasus & Proyek Pilihan</h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Portofolio arsitektur dan implementasi infrastruktur IT yang berfokus pada penyelesaian tantangan bisnis nyata di tingkat enterprise.
-            </p>
+            <h2 className="text-3xl font-bold text-slate-900 mb-4 tracking-tight">Studi Kasus & Proyek Pilihan</h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">Portofolio arsitektur dan implementasi infrastruktur IT tingkat enterprise.</p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {projectsData.map((project) => (
-              <div 
-                key={project.id} 
-                className="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-xl hover:border-blue-200 transition-all duration-300 flex flex-col h-full cursor-pointer"
-                onClick={() => onSelectProject(project)}
-              >
+              <div key={project.id} className="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-xl transition-all cursor-pointer flex flex-col" onClick={() => onSelectProject(project)}>
                 <div className="p-8 flex-grow">
-                  <div className="text-xs font-bold tracking-wider text-blue-600 uppercase mb-3">
-                    {project.category}
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-700 transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-slate-600 text-sm mb-6 line-clamp-3">
-                    {project.shortDesc}
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-2 mt-auto">
+                  <div className="text-xs font-bold tracking-wider text-blue-600 uppercase mb-3">{project.category}</div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-700 transition-colors">{project.title}</h3>
+                  <p className="text-slate-600 text-sm mb-6 line-clamp-3">{project.shortDesc}</p>
+                  <div className="flex flex-wrap gap-2">
                     {project.tech.map((t, i) => (
-                      <span key={i} className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-700">
-                        {t}
-                      </span>
+                      <span key={i} className="px-2.5 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">{t}</span>
                     ))}
                   </div>
                 </div>
-                <div className="px-8 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between group-hover:bg-blue-50 transition-colors">
-                  <span className="text-sm font-semibold text-slate-600 group-hover:text-blue-700">Lihat Detail Proyek</span>
-                  <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-blue-600" />
+                <div className="px-8 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-sm font-semibold text-slate-600 group-hover:text-blue-700 transition-colors">
+                  Lihat Detail <ExternalLink className="w-4 h-4" />
                 </div>
               </div>
             ))}
@@ -342,32 +686,25 @@ function HomeView({ onSelectProject }) {
       <section id="contact" className="py-20 bg-slate-900 text-white border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            <div>
+            <div className="text-left">
               <h2 className="text-3xl font-bold mb-6">Let's Work Together</h2>
-              <p className="text-slate-400 mb-8 text-lg">
-                Sedang merencanakan migrasi ke cloud, perancangan arsitektur hybrid, atau optimalisasi data center? Mari berdiskusi untuk menemukan solusi teknologi yang selaras dengan tujuan strategis perusahaan Anda.
-              </p>
-              
+              <p className="text-slate-400 mb-8 text-lg">Mari berdiskusi untuk menemukan solusi teknologi yang selaras dengan tujuan strategis perusahaan Anda.</p>
               <div className="space-y-4">
-                <a href="mailto:contact@example.com" className="flex items-center gap-4 text-slate-300 hover:text-white transition-colors p-4 rounded-lg bg-slate-800 border border-slate-700">
+                <a href="mailto:clouddatasolutions@intikom.co.id" className="flex items-center gap-4 text-slate-300 hover:text-white transition-colors p-4 rounded-lg bg-slate-800 border border-slate-700">
                   <Mail className="w-6 h-6 text-blue-400" />
-                  <span className="font-medium">contact@enterprise-cloud.id</span>
+                  <span className="font-medium">clouddatasolutions@intikom.co.id</span>
                 </a>
-                <a href="#" className="flex items-center gap-4 text-slate-300 hover:text-white transition-colors p-4 rounded-lg bg-slate-800 border border-slate-700">
-                  {/* Ikon di bawah ini sudah diperbarui untuk menghindari error module */}
+                <a href="https://intikom.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-slate-300 hover:text-white transition-colors p-4 rounded-lg bg-slate-800 border border-slate-700">
                   <Link className="w-6 h-6 text-blue-400" />
-                  <span className="font-medium">linkedin.com/in/cloud-architect</span>
+                  <span className="font-medium">https://intikom.com/</span>
                 </a>
               </div>
             </div>
-            
             <div className="bg-slate-800 p-8 rounded-2xl border border-slate-700">
-              <h3 className="text-xl font-bold mb-6 text-white">Platform & Teknologi Inti</h3>
+              <h3 className="text-xl font-bold mb-6 text-white text-left">Platform & Teknologi Inti</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {['Microsoft Azure', 'SQL Server', 'Tableau', 'Windows Server', 'Linux/Ubuntu', 'Azure AD', 'VPN / IPsec', 'Power Automate', 'Copilot Studio'].map((tech) => (
-                  <div key={tech} className="bg-slate-700/50 p-3 rounded-md text-center text-sm font-medium text-slate-300 border border-slate-600/50">
-                    {tech}
-                  </div>
+                  <div key={tech} className="bg-slate-700/50 p-3 rounded-md text-center text-sm font-medium text-slate-300 border border-slate-600/50">{tech}</div>
                 ))}
               </div>
             </div>
@@ -380,102 +717,55 @@ function HomeView({ onSelectProject }) {
 
 function ProjectDetailView({ project, onBack }) {
   if (!project) return null;
-
   return (
-    <div className="min-h-screen bg-slate-50 pt-8 pb-20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        
-        <button 
-          onClick={onBack}
-          className="group flex items-center text-sm font-semibold text-slate-500 hover:text-blue-600 mb-8 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-          Kembali ke Portofolio
+    <div className="min-h-screen bg-slate-50 pt-24 pb-20">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        <button onClick={onBack} className="group flex items-center text-sm font-semibold text-slate-500 hover:text-blue-600 mb-8 transition-colors">
+          <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" /> Kembali ke Portofolio
         </button>
-
-        <div className="bg-white rounded-2xl p-8 sm:p-12 shadow-sm border border-slate-200 mb-8">
-          <div className="inline-block px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold tracking-wider uppercase mb-6">
-            {project.category}
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-6 leading-tight">
-            {project.title}
-          </h1>
-          
-          <div className="flex flex-wrap gap-2 mb-8">
-            {project.tech.map((t, i) => (
-              <span key={i} className="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-slate-100 text-slate-800 border border-slate-200">
-                <Code className="w-3 h-3 mr-2 text-slate-400" /> {t}
-              </span>
-            ))}
-          </div>
-
+        <div className="bg-white rounded-2xl p-8 sm:p-12 shadow-sm border border-slate-200 mb-8 text-left">
+          <div className="inline-block px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase mb-6">{project.category}</div>
+          <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">{project.title}</h1>
           <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-6">
-            <h3 className="flex items-center text-blue-800 font-bold mb-2">
-              <Activity className="w-5 h-5 mr-2" /> Nilai Bisnis Utama (Value)
-            </h3>
-            <p className="text-blue-900/80 leading-relaxed">
-              {project.businessValue}
-            </p>
+            <h3 className="flex items-center text-blue-800 font-bold mb-2"><Activity className="w-5 h-5 mr-2" /> Nilai Bisnis Utama</h3>
+            <p className="text-blue-900/80 leading-relaxed">{project.businessValue}</p>
           </div>
         </div>
-
         <div className="space-y-8">
-          
-          <section className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200">
-            <h2 className="text-2xl font-bold text-slate-900 mb-4 border-b border-slate-100 pb-4">Latar Belakang & Masalah</h2>
-            <p className="text-slate-600 leading-relaxed text-lg">
-              {project.background}
-            </p>
+          {project.slides && project.slides.length > 0 && (
+            <section className="bg-white rounded-2xl p-4 md:p-8 shadow-sm border border-slate-200">
+              <h2 className="text-2xl font-bold text-slate-900 mb-2 border-b pb-4 text-left">Pitch Deck</h2>
+              <p className="text-slate-500 text-sm mb-6 text-left">Gunakan swipe atau panah keyboard untuk navigasi.</p>
+              <PresentationSlider slides={project.slides} />
+            </section>
+          )}
+          <section className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 text-left">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4 border-b pb-4">Latar Belakang</h2>
+            <p className="text-slate-600 leading-relaxed text-lg">{project.background}</p>
           </section>
-
-          <section className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200">
-            <h2 className="text-2xl font-bold text-slate-900 mb-4 border-b border-slate-100 pb-4">Arsitektur Solusi</h2>
-            <p className="text-slate-600 leading-relaxed text-lg mb-6">
-              {project.architecture}
-            </p>
-            <div className="w-full bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl p-8 flex flex-col items-center justify-center text-slate-400">
-              <Layers className="w-12 h-12 mb-3 text-slate-300" />
-              <p className="text-sm font-medium">Diagram Arsitektur Jaringan (NDA Protected / Placeholder)</p>
-            </div>
-          </section>
-
-          <section className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200">
-            <h2 className="text-2xl font-bold text-slate-900 mb-6 border-b border-slate-100 pb-4">Langkah Implementasi</h2>
+          <section className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 text-left">
+            <h2 className="text-2xl font-bold text-slate-900 mb-6 border-b pb-4">Langkah Implementasi</h2>
             <ul className="space-y-4">
-              {project.implementation.map((step, index) => (
-                <li key={index} className="flex items-start">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-slate-100 text-slate-500 font-bold flex items-center justify-center mr-4 border border-slate-200">
-                    {index + 1}
-                  </div>
-                  <p className="text-slate-700 text-lg pt-1">{step}</p>
+              {project.implementation.map((step, idx) => (
+                <li key={idx} className="flex items-start">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-slate-100 text-slate-500 font-bold flex items-center justify-center mr-4">{idx + 1}</div>
+                  <p className="text-slate-700 pt-1 text-lg">{step}</p>
                 </li>
               ))}
             </ul>
           </section>
-
-          <section className="bg-slate-900 rounded-2xl p-8 shadow-lg">
+          <section className="bg-slate-900 rounded-2xl p-8 shadow-lg text-left">
             <h2 className="text-2xl font-bold text-white mb-6 border-b border-slate-700 pb-4">Hasil & Pencapaian</h2>
             <div className="grid gap-4">
-              {project.results.map((result, index) => (
-                <div key={index} className="flex items-start">
-                  <CheckCircle className="w-6 h-6 text-green-400 mr-3 flex-shrink-0 mt-0.5" />
-                  <p className="text-slate-200 text-lg leading-relaxed">{result}</p>
+              {project.results.map((res, idx) => (
+                <div key={idx} className="flex items-start">
+                  <CheckCircle className="w-6 h-6 text-green-400 mr-3 mt-0.5" />
+                  <p className="text-slate-200 text-lg leading-relaxed">{res}</p>
                 </div>
               ))}
             </div>
           </section>
-
         </div>
-        
-        <div className="mt-12 text-center">
-          <button 
-            onClick={onBack}
-            className="px-6 py-3 bg-white border border-slate-200 text-slate-700 font-semibold rounded-lg shadow-sm hover:bg-slate-50 hover:text-blue-600 transition-all"
-          >
-            Tutup Studi Kasus
-          </button>
-        </div>
-
       </div>
     </div>
   );
@@ -485,16 +775,11 @@ function Footer() {
   return (
     <footer className="bg-slate-950 text-slate-400 py-10 border-t border-slate-800 text-center">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-center items-center gap-2 mb-4">
-          <Cloud className="w-6 h-6 text-slate-500" />
-          <span className="font-bold text-lg text-slate-300">Data & AI Solution.</span>
+        <div className="flex justify-center items-center gap-2 mb-4 font-bold text-lg text-slate-300">
+          <Cloud className="w-6 h-6 text-blue-500" /> Data & AI Solution.
         </div>
-        <p className="text-sm mb-2">
-          © {new Date().getFullYear()} Data & AI Solution Portfolio.
-        </p>
-        <p className="text-xs text-slate-600">
-          Solusi IT Skala Enterprise • Microsoft Azure • Keamanan Terintegrasi
-        </p>
+        <p className="text-sm mb-2">© {new Date().getFullYear()} Data & AI Solution Portfolio.</p>
+        <p className="text-xs text-slate-600">Solusi IT Skala Enterprise • powered by PT Intikom Berlian Mustika • Microsoft Azure</p>
       </div>
     </footer>
   );
