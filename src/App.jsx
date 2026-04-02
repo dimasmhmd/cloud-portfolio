@@ -87,7 +87,6 @@ const projectsData = [
     ],
     results: [
       'Implementasi ini memberikan dampak nyata yang dapat diukur secara finansial maupun operasional:',
-      '',
       'Downtime berkurang hingga 99.9%: Dengan fitur Failover dan High Availability di Azure, layanan tetap aktif meskipun ada kendala server fisik (on-premise).',
       'Peningkatan Performa 40%: Aplikasi berjalan lebih cepat karena beban kerja didistribusikan secara cerdas.',
       'Efisiensi Biaya 30%: Mengurangi biaya listrik, pendinginan, dan pemeliharaan hardware fisik tahunan.',
@@ -887,30 +886,41 @@ function ProjectDetailView({ project, onBack }) {
               ))}
             </div> */}
             <div className="grid gap-4">
-              {Array.isArray(project.results) ? (
-                project.results.map((item, index) => {
-                  // 1. Jika kalimat berakhiran titik dua (:) -> Jadikan Judul Section
-                  if (item.trim().endsWith(':')) {
-                    return <h4 key={index} className="text-slate-200 text-lg leading-relaxed">{item}</h4>;
-                  }
-                  // 2. Jika kalimat mengandung titik dua (:) di tengah -> Jadikan List Poin
-                  if (item.includes(':') && index > 1) {
-                    const [boldPart, ...restPart] = item.split(':');
-                    return (
-                      <div key={index} className="flex items-start mb-2 ml-2 md:ml-4">
-                        <CheckCircle className="w-6 h-6 text-green-400 mr-3 mt-0.5" />
-                        {/* <span className="mr-2.5 text-blue-500 font-bold mt-0.5">✓</span> */}
-                        {/* <p><strong className="text-slate-200 text-lg leading-relaxed">{boldPart}:</strong>{restPart.join(':')}</p> */}
-                        <p><strong className="text-slate-200 text-lg leading-relaxed">{boldPart}:</strong><span className="text-slate-200 text-lg leading-relaxed"> {restPart.join(':')}</span></p>
-                      </div>
-                    );
-                  }
-                  // 3. Kalimat biasa -> Jadikan Paragraf
-                  return <p key={index} className="text-slate-200 text-lg leading-relaxed">{item}</p>;
-                })
-              ) : (
-                <p>{project.results}</p>
-              )}
+              {project.results.map((res, idx) => {
+              // Logika Cerdas: Cek apakah ini kalimat pengantar atau poin hasil
+              const isHeader = res.trim().endsWith(':');
+              const hasColon = res.includes(':');
+
+              if (isHeader) {
+                // Jika kalimat berakhiran titik dua (Teks Pengantar) -> Tanpa Centang
+                return (
+                <p key={idx} className="text-slate-300 text-lg leading-relaxed mb-2">
+                  {res}
+                </p>
+                );
+              }
+
+              if (hasColon) {
+                // Jika ada titik dua di tengah kalimat -> Beri Centang + Bold
+                const [boldPart, ...restPart] = res.split(':');
+                return (
+                <div key={idx} className="flex items-start">
+                  <CheckCircle className="w-6 h-6 text-green-400 mr-3 flex-shrink-0 mt-0.5" />
+                  <p className="text-slate-200 text-lg leading-relaxed">
+                  <strong className="text-white font-semibold">{boldPart}:</strong>{restPart.join(':')}
+                  </p>
+                </div>
+                );
+              }
+
+              // Default: Kalimat biasa -> Beri Centang tanpa Bold
+              return (
+                <div key={idx} className="flex items-start">
+                <CheckCircle className="w-6 h-6 text-green-400 mr-3 flex-shrink-0 mt-0.5" />
+                <p className="text-slate-200 text-lg leading-relaxed">{res}</p>
+                </div>
+              );
+              })}
             </div>
           </section>
         </div>
