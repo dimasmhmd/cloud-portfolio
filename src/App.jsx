@@ -40,6 +40,11 @@ const projectsData = [
     architecture: 'Infrastruktur menggunakan Azure Virtual Network (VNet) yang terhubung ke router lokal via Azure VPN Gateway (IPsec/IKEv2). VM di Azure diisolasi menggunakan Network Security Group (NSG) dan hanya dapat diakses melalui alamat IP privat dari intranet perusahaan.',
     
     slides: [
+      { type: 'media', url: '/hybrid-cloud/slide1.png', fit: 'contain' },
+      { type: 'media', url: '/hybrid-cloud/slide2.png', fit: 'contain' },
+      { type: 'media', url: '/hybrid-cloud/slide3.png', fit: 'contain' },
+      { type: 'media', url: '/hybrid-cloud/slide4.png', fit: 'contain' },
+      { type: 'media', url: '/hybrid-cloud/slide5.png', fit: 'contain' },
       // {
       //   type: 'cover',
       //   title: 'Hybrid Cloud Integration',
