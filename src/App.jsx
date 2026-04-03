@@ -227,6 +227,48 @@ const projectsData = [
 ];
 
 // ==========================================
+// KOMPONEN: NAVBAR PERSISTEN
+// ==========================================
+function Navbar({ onNavigate }) {
+  // Fungsi penanganan navigasi agar otomatis kembali ke beranda saat dari detail proyek
+  const handleNavClick = (sectionId) => {
+    onNavigate(); 
+    setTimeout(() => {
+      if (sectionId) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
+  return (
+    <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <button 
+          onClick={() => handleNavClick('')} 
+          className="flex items-center gap-2 focus:outline-none cursor-pointer"
+        >
+          {/* Logo Intikom yang Anda minta */}
+          <img src="/Intikom-Logo.png" alt="Logo" width="150" />
+        </button>
+        <div className="hidden md:flex space-x-8 text-sm font-medium text-slate-600 items-center">
+          <button onClick={() => handleNavClick('about')} className="hover:text-blue-600 transition-colors focus:outline-none">Tentang</button>
+          <button onClick={() => handleNavClick('portfolio')} className="hover:text-blue-600 transition-colors focus:outline-none">Portofolio Proyek</button>
+          <button onClick={() => handleNavClick('expertise')} className="hover:text-blue-600 transition-colors focus:outline-none">Keahlian</button>
+          <button onClick={() => handleNavClick('contact')} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none">
+            Hubungi Kami
+          </button>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+// ==========================================
 // KOMPONEN: PRESENTATION SLIDER
 // ==========================================
 function PresentationSlider({ slides }) {
@@ -553,6 +595,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
+      {/* Navbar sekarang berada di luar view, sehingga muncul persisten di seluruh halaman */}
+      <Navbar onNavigate={navigateToHome} />
+      
       {currentView === 'home' ? (
         <HomeView onSelectProject={navigateToProject} />
       ) : (
