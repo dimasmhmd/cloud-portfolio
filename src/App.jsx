@@ -654,10 +654,10 @@ function HomeView({ onSelectProject }) {
             <div>
               <h2 className="text-3xl font-bold text-slate-900 mb-6">Professional IT & Cloud Consultant</h2>
               <p className="text-slate-600 text-lg mb-6 leading-relaxed">
-                Dengan pengalaman mendalam dalam merancang dan mengimplementasikan arsitektur IT modern, saya membantu perusahaan menjembatani kesenjangan antara infrastruktur lokal (on-premise) dan skalabilitas cloud awan.
+                Dengan pengalaman mendalam dalam merancang dan mengimplementasikan arsitektur IT modern, kami membantu perusahaan menjembatani kesenjangan antara infrastruktur lokal (on-premise) dan skalabilitas cloud awan.
               </p>
               <p className="text-slate-600 text-lg mb-8 leading-relaxed">
-                Fokus utama saya adalah memastikan keamanan jaringan, ketersediaan data tinggi (High Availability), dan efisiensi operasional sistem mission-critical bisnis Anda.
+                Fokus utama kami adalah memastikan keamanan jaringan, ketersediaan data tinggi (High Availability), dan efisiensi operasional sistem mission-critical bisnis Anda.
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 bg-slate-50 border border-slate-100 rounded-lg">
