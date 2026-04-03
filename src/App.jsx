@@ -104,21 +104,55 @@ const projectsData = [
     category: 'Data Platform',
     shortDesc: 'Migrasi dan integrasi platform basis data relasional skala enterprise ke layanan PaaS tersertifikasi Azure dengan sinkronisasi real-time.',
     tech: ['Azure SQL MI', 'Azure Data Studio', 'ExpressRoute'],
-    businessValue: 'Mengurangi beban operasional pemeliharaan database (patching, backup) hingga 40%, memungkinkan fokus pada optimasi query bisnis.',
-    background: 'Sistem ERP klien berjalan di atas SQL Server on-premise versi lama yang mendekati End-of-Support. Klien membutuhkan modernisasi ke cloud namun mempertahankan kompatibilitas 100% dengan mesin SQL Server untuk menghindari penulisan ulang aplikasi.',
+    businessValue: [
+      'Transformasi ini bukan sekadar memindahkan data ke internet, melainkan membangun fondasi yang memungkinkan bisnis untuk tumbuh tanpa hambatan teknis.',
+      'Permasalahan Sebelum Modernisasi:',
+      'Legacy System & On-Premise: Ketergantungan pada hardware fisik yang mulai menua dan sulit didukung.',
+      'Maintenance Kompleks: Tim IT menghabiskan terlalu banyak waktu untuk patching, tuning, dan pemeliharaan rutin.',
+      'Risiko Downtime: Tidak adanya sistem failover yang memadai meningkatkan risiko operasional terhenti.',
+      'Kekakuan Skalabilitas: Sulit meningkatkan kapasitas server saat volume transaksi meningkat drastis.',
+      'Manfaat Strategis yang Dihasilkan:',
+      'Efisiensi Operasional: Mengurangi biaya pemeliharaan server fisik dan mengalihkan fokus tim IT ke inovasi produk.',
+      'Performa Optimal: Akses data lebih cepat dengan engine SQL terbaru yang selalu diperbarui secara otomatis oleh Azure.',
+      'Resiliensi Tinggi: Fitur High Availability dan Automatic Backup bawaan menjamin data selalu tersedia dan aman.',
+      'Keamanan Enterprise: Enkripsi data tingkat lanjut dan kepatuhan standar keamanan global Microsoft.',
+      'Skalabilitas Instan: Menambah kapasitas komputasi dan penyimpanan hanya dengan beberapa klik sesuai kebutuhan pasar.'
+    ],
+    background: [
+      'Perusahaan mengelola database pelanggan dan stok di server lokal. Sistem ini sering mengalami bottleneck saat periode promo besar karena keterbatasan hardware.',
+      'Tantangan Utama:',
+      'Performance Degradation: Query database melambat saat transaksi mencapai puncaknya.',
+      'Manual Recovery: Proses restore data jika terjadi kegagalan memakan waktu hingga 5 jam.',
+      'Security Risk: OS server yang lama sulit diperbarui karena ketergantungan aplikasi lama (legacy).',
+      'Kebutuhan:',
+      'Membutuhkan migrasi "Lift-and-Shift" yang cepat ke cloud namun ingin mendapatkan manfaat Managed Services untuk mengurangi beban kerja tim IT.'
+    ],
     architecture: 'Menggunakan arsitektur Hub-and-Spoke. Azure SQL Managed Instance (MI) di-deploy ke dalam subnet terisolasi (dedicated subnet). Koneksi dari aplikasi legacy di Azure VM dirutekan secara privat tanpa public endpoint.',
-    slides: [], 
+    slides: [
+      { type: 'media', url: '/vm-mi/slide1.png', fit: 'contain' },
+      { type: 'media', url: '/vm-mi/slide2.png', fit: 'contain' },
+      { type: 'media', url: '/vm-mi/slide3.png', fit: 'contain' },
+      { type: 'media', url: '/vm-mi/slide4.png', fit: 'contain' },
+      { type: 'media', url: '/vm-mi/slide5.png', fit: 'contain' },
+    ], 
     implementation: [
-      'Assessment kompatibilitas data menggunakan Data Migration Assistant (DMA).',
-      'Deployment Azure SQL Managed Instance pada VNet terisolasi.',
-      'Setup konektivitas peering antara VNet aplikasi dan VNet Database.',
-      'Migrasi data menggunakan Azure Database Migration Service secara online.',
-      'Failover aplikasi ke instance baru dengan downtime kurang dari 10 menit.'
+      'Assessment Database Existing: Mengevaluasi ukuran data, skema, dan kompatibilitas menggunakan Azure Data Migration Assistant (DMA).',
+      'Architecture Design: Merancang topologi Azure Virtual Network (VNet) untuk memastikan isolasi jaringan yang aman.',
+      'Setup Azure VM: Mendeploy server aplikasi untuk menampung middleware dan logika bisnis.',
+      'Provisioning Azure SQL MI: Membuat instance database dengan spesifikasi yang sesuai dengan beban kerja puncak perusahaan.',
+      'Networking Configuration: Integrasi VNet dan pengaturan Network Security Groups (NSG) untuk keamanan akses.',
+      'Data Migration: Melakukan migrasi data secara online menggunakan Azure Data Migration Service (DMS) untuk meminimalkan waktu henti (downtime).',
+      'Application Integration: Mengalihkan connection string aplikasi dari server lama ke endpoint Azure SQL MI yang baru.',
+      'Performance Testing: Melakukan stress test untuk memastikan sistem mampu menangani beban 3x lipat dari kondisi normal.',
+      'Monitoring & Optimization: Konfigurasi Azure Monitor untuk pengawasan kesehatan sistem secara proaktif.'
     ],
     results: [
-      'Kinerja I/O database meningkat sebesar 35%.',
-      'Automasi pencadangan data point-in-time hingga 35 hari.',
-      'Penghapusan total biaya overhead OS maintenance.'
+      'Transformasi ini menghasilkan perubahan signifikan pada operasional perusahaan:',
+      'Akses Data: Peningkatan performa query hingga 65% dibandingkan sistem lama.',
+      'Zero Downtime Risk: Mencapai ketersediaan sistem 99.99% (SLA).',
+      'Disaster Recovery: Waktu pemulihan data berkurang dari 5 jam menjadi kurang dari 10 menit.',
+      'Cost Efficiency: Penghematan biaya operasional sebesar 30% karena penghapusan biaya pemeliharaan hardware fisik.',
+      'Enhanced Security: Berhasil melewati audit keamanan data internal dengan standar enkripsi terbaru.'
     ]
   },
   {
@@ -127,21 +161,56 @@ const projectsData = [
     category: 'Business Continuity',
     shortDesc: 'Perancangan arsitektur pemulihan bencana (DR) dan ketersediaan tinggi lintas zona geografis (Geo-Replication) untuk beban kerja mission-critical.',
     tech: ['SQL MI', 'Geo-Replication', 'Azure Traffic Manager'],
-    businessValue: 'Mencapai target RTO (Recovery Time Objective) < 1 jam dan RPO (Recovery Point Objective) < 5 detik untuk sistem transaksi inti.',
-    background: 'Sebagai perusahaan ritel nasional, downtime sistem inventori selama 1 jam dapat menyebabkan kerugian ratusan juta rupiah. Sistem lama tidak memiliki failover site yang memadai.',
+    businessValue: [
+      'Keandalan sistem bukan lagi sebuah "opsi", melainkan fondasi dari kepercayaan pelanggan. Arsitektur HA memastikan bahwa data Anda selalu tersedia saat dibutuhkan.',
+      'Permasalahan Sebelum Implementasi:',
+      'Risiko Downtime Tinggi: Gangguan kecil pada server fisik atau jaringan dapat melumpuhkan seluruh operasional bisnis selama berjam-jam.',
+      'Tanpa Failover Otomatis: Pemulihan sistem dilakukan secara manual, yang memakan waktu lama dan rentan terhadap human error.',
+      'Backup & Recovery Tidak Optimal: Risiko kehilangan data transaksi terbaru karena jeda waktu backup yang terlalu lama.',
+      'Sistem Tidak Siap Beban Tinggi: Infrastruktur lama kesulitan menangani lonjakan trafik secara mendadak.',
+      'Manfaat Strategis yang Dihasilkan:',
+      'Minim Downtime (Near Zero Downtime): Menjaga ketersediaan layanan tetap aktif mendekati 100%, meminimalkan dampak pada revenue.',
+      'Automatic Failover System: Jika terjadi gangguan pada server utama, sistem secara cerdas berpindah ke server cadangan tanpa intervensi manual.',
+      'Data Protection & Redundancy: Replikasi data secara real-time memastikan informasi tetap aman dan konsisten di berbagai lokasi.',
+      'Kinerja Stabil untuk Sistem Kritikal: Optimasi performa yang konsisten bahkan saat beban kerja mencapai titik tertinggi.',
+      'Efisiensi Operasional: Menghilangkan biaya pemeliharaan infrastruktur HA yang rumit karena Azure mengelola aspek tersebut secara otomatis.'
+    ],
+    background: [
+      'Database inti perusahaan berjalan pada satu instance server tunggal. Tidak ada sistem cadangan yang terintegrasi secara otomatis. Jika server mengalami masalah, tim IT harus melakukan restore manual dari backup terakhir.',
+      'Tantangan Utama:',
+      'Downtime = Revenue Loss: Setiap menit sistem mati mengakibatkan kerugian finansial langsung dan potensi denda dari regulator.',
+      'Risiko Kehilangan Data: Backup manual memiliki risiko kehilangan data transaksi yang terjadi di antara interval backup (Data Loss Gap).',
+      'No Disaster Recovery: Belum adanya rencana pemulihan bencana yang teruji jika pusat data utama mengalami kegagalan total.',
+      'Kebutuhan:',
+      'Sistem database yang memiliki tingkat ketersediaan tinggi (SLA 99.99%), mampu melakukan pemulihan otomatis, dan menjaga konsistensi data di segala kondisi.'
+    ],
     architecture: 'Implementasi Azure SQL MI di dua region berbeda (misal: Southeast Asia dan East Asia) menggunakan fitur Auto-failover groups. Azure Traffic Manager digunakan pada layer aplikasi untuk mengarahkan lalu lintas pengguna.',
-    slides: [],
+    slides: [
+      { type: 'media', url: '/high-availability/slide1.png', fit: 'contain' },
+      { type: 'media', url: '/high-availability/slide2.png', fit: 'contain' },
+      { type: 'media', url: '/high-availability/slide3.png', fit: 'contain' },
+      { type: 'media', url: '/high-availability/slide4.png', fit: 'contain' },
+      { type: 'media', url: '/high-availability/slide5.png', fit: 'contain' },
+      { type: 'media', url: '/high-availability/slide6.png', fit: 'contain' },
+      { type: 'media', url: '/high-availability/slide7.png', fit: 'contain' },
+    ],
     implementation: [
-      'Provisi instance primer dan sekunder di region yang berpasangan.',
-      'Konfigurasi Auto-failover group dengan kebijakan read-write listener.',
-      'Pengalihan koneksi aplikasi untuk memanfaatkan endpoint listener.',
-      'Simulasi failover paksa (DR Drill) untuk memvalidasi RTO/RPO.',
-      'Monitoring replikasi data via Azure Monitor.'
+      'Assessment Sistem Existing: Menganalisis pola transaksi dan menentukan target RTO (Recovery Time Objective) dan RPO (Recovery Point Objective).',
+      'Perencanaan Arsitektur HA: Merancang desain Failover Group lintas wilayah (Geo-Replication) untuk ketahanan maksimal.',
+      'Deployment Azure SQL Managed Instance: Menyiapkan lingkungan Managed Service yang terintegrasi dengan jaringan internal perusahaan.',
+      'Konfigurasi Auto-Failover Groups: Mengatur mekanisme perpindahan otomatis antara Primary dan Secondary instance.',
+      'Setup Replication & Synchronization: Memastikan data tersinkronisasi secara terus-menerus dengan latensi minimal.',
+      'Integrasi Aplikasi ke Endpoint HA: Mengonfigurasi aplikasi agar terhubung ke Listener Endpoint yang cerdas (otomatis mengarah ke server yang aktif).',
+      'Testing Failover Scenario: Melakukan simulasi pemutusan koneksi pada server utama untuk memvalidasi bahwa sistem cadangan aktif dalam hitungan detik.',
+      'Monitoring & Reliability Tracking: Mengaktifkan Azure Monitor dan Alerting untuk memantau kesehatan sinkronisasi data.'
     ],
     results: [
-      'Uptime SLA terjamin pada tingkat 99.99%.',
-      'Read scale-out: Beban pelaporan analitik dialihkan ke node sekunder, meringankan node primer.',
-      'Sistem berhasil melewati audit kelayakan Disaster Recovery ISO 27001.'
+      'Implementasi arsitektur ini membawa perubahan transformasional bagi ketahanan bisnis:',
+      'Downtime Terpangkas: Pengurangan durasi downtime hingga 99.9% dibandingkan sistem manual.',
+      'Instant Failover: Perpindahan server terjadi secara otomatis dalam < 30 detik tanpa kehilangan data.',
+      'Availability: Berhasil mencapai SLA ketersediaan sistem sebesar 99.99%.',
+      'Data Consistency: Menjamin integritas data 100% melalui sinkronisasi berbasis transactional replication.',
+      'Efisiensi Biaya: Mengurangi kebutuhan staf khusus Database Administrator untuk standby 24/7 hanya untuk penanganan failover manual.'
     ]
   },
   {
