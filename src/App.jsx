@@ -7,6 +7,17 @@ import {
 } from 'lucide-react';
 
 // ==========================================
+// DATA KLIEN (OUR CLIENTS)
+// ==========================================
+const clientsData = [
+  { id: 'client1', name: 'Perusahaan A', logo: '/clients/bsi.png' },
+  { id: 'client2', name: 'Perusahaan B', logo: '/clients/bca.png' },
+  { id: 'client3', name: 'Perusahaan C', logo: '/clients/bca-syariah.png' },
+  { id: 'client4', name: 'Perusahaan D', logo: '/clients/bjb.png' },
+  { id: 'client5', name: 'Perusahaan E', logo: '/clients/bnif.png' },
+];
+
+// ==========================================
 // DATA PROYEK (DENGAN TEMA ENTERPRISE)
 // ==========================================
 const projectsData = [
@@ -45,38 +56,6 @@ const projectsData = [
       { type: 'media', url: '/hybrid-cloud/slide3.png', fit: 'contain' },
       { type: 'media', url: '/hybrid-cloud/slide4.png', fit: 'contain' },
       { type: 'media', url: '/hybrid-cloud/slide5.png', fit: 'contain' },
-      // {
-      //   type: 'cover',
-      //   title: 'Hybrid Cloud Integration',
-      //   subtitle: 'Meruntuhkan Batasan Infrastruktur Tradisional menuju Skalabilitas Tanpa Batas',
-      //   bgVideo: 'https://www.w3schools.com/html/mov_bbb.mp4' 
-      // },
-      // {
-      //   type: 'content',
-      //   title: 'Tantangan Bisnis Saat Ini',
-      //   bullets: [
-      //     'Kapasitas Data Center lokal (On-Premise) telah mencapai ambang batas kritis (95%).',
-      //     'Proses pengadaan perangkat keras fisik memakan waktu 3-4 minggu.',
-      //     'Kebutuhan skalabilitas instan saat terjadi lonjakan transaksi pengguna di akhir bulan.',
-      //     'Regulasi ketat perbankan yang mewajibkan isolasi data dari internet publik.'
-      //   ]
-      // },
-      // {
-      //   type: 'media',
-      //   url: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop',
-      //   caption: 'Topologi Jaringan Terenkripsi (IPsec VPN Tunneling)',
-      //   fit: 'contain'
-      // },
-      // {
-      //   type: 'content',
-      //   title: 'Hasil & Dampak Transformasi',
-      //   bullets: [
-      //     'Agilitas Tinggi: Waktu provisi Virtual Machine baru turun drastis dari 21 hari menjadi hanya 15 menit.',
-      //     'Efisiensi Finansial: Berhasil bertransisi dari model investasi CAPEX menjadi langganan OPEX yang terukur.',
-      //     'Keamanan Terjamin: 100% lalu lintas data berjalan di jalur terenkripsi (End-to-End) tanpa terekspos keluar.',
-      //     'Uptime Tinggi: SLA jaringan internal tercapai di angka 99.9%.'
-      //   ]
-      // }
     ],
     
     implementation: [
@@ -253,7 +232,7 @@ const projectsData = [
       { type: 'media', url: '/chatbot/slide8.png', fit: 'contain' },
       { 
         type: 'media', 
-        url: '/chatbot/demo.mp4', // PERBAIKAN: Gunakan kunci 'url', bukan 'bgVideo' untuk tipe media
+        url: '/chatbot/demo.mp4', 
         caption: 'Video Demonstrasi Fitur AI Chatbot' 
       },
       { type: 'media', url: '/chatbot/slide9.png', fit: 'contain' },
@@ -649,7 +628,7 @@ function PresentationSlider({ slides }) {
 }
 
 // ==========================================
-// KOMPONEN UTAMA (LAYOUT & FOOTER)
+// KOMPONEN UTAMA (LAYOUT & ROUTER)
 // ==========================================
 export default function App() {
   const [currentView, setCurrentView] = useState('home');
@@ -685,21 +664,6 @@ export default function App() {
 function HomeView({ onSelectProject }) {
   return (
     <main>
-      <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2 text-blue-600 font-bold text-xl tracking-tight">
-            {/* <Cloud className="w-8 h-8" /> Data & AI Solution. */}
-            <img src="/Intikom-Logo.png" alt="Logo" width="150" />
-          </div>
-          <div className="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
-            <a href="#about" className="hover:text-blue-600 transition-colors">Tentang</a>
-            <a href="#portfolio" className="hover:text-blue-600 transition-colors">Portofolio Proyek</a>
-            <a href="#expertise" className="hover:text-blue-600 transition-colors">Keahlian</a>
-            <a href="#contact" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">Hubungi Kami</a>
-          </div>
-        </div>
-      </nav>
-
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 bg-slate-900 overflow-hidden text-center">
         <div className="absolute inset-0 z-0 opacity-20">
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-700 via-slate-900 to-slate-900"></div>
@@ -780,7 +744,34 @@ function HomeView({ onSelectProject }) {
         </div>
       </section>
 
-      <section id="portfolio" className="py-20 bg-slate-50">
+      {/* ========================================== */}
+      {/* SECTION KLIEN KAMI (OUR CLIENTS) */}
+      {/* ========================================== */}
+      <section id="clients" className="py-12 bg-white border-t border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-sm font-semibold text-slate-400 uppercase tracking-widest mb-8">
+            Dipercaya Oleh Perusahaan Terkemuka
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-100">
+            {clientsData.map(client => (
+              <div key={client.id} className="flex items-center justify-center hover:grayscale-0 transition-all duration-300 w-28 h-16 md:w-36 md:h-20">
+                <img 
+                  src={client.logo} 
+                  alt={client.name} 
+                  className="max-w-full max-h-full object-contain" 
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'block';
+                  }}
+                />
+                <span className="hidden font-bold text-slate-400 text-lg text-center">{client.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="portfolio" className="py-20 bg-slate-50 border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-slate-900 mb-4 tracking-tight">Studi Kasus & Proyek Pilihan</h2>
@@ -893,17 +884,19 @@ function ProjectDetailView({ project, onBack }) {
         <div className="bg-white rounded-2xl p-8 sm:p-12 shadow-sm border border-slate-200 mb-8 text-left">
           <div className="inline-block px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase mb-6">{project.category}</div>
           <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">{project.title}</h1>
+          
           <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-6">
-            <h3 className="flex items-center text-blue-800 font-bold mb-2"><Activity className="w-5 h-5 mr-2" /> Nilai Bisnis Utama</h3>
+            <h3 className="flex items-center text-blue-800 font-bold mb-4 text-lg"><Activity className="w-5 h-5 mr-2" /> Nilai Bisnis Utama</h3>
             <div className="text-blue-900/80 leading-relaxed">
               {Array.isArray(project.businessValue) ? (
                 project.businessValue.map((item, index) => {
-                  // 1. Jika kalimat berakhiran titik dua (:) -> Jadikan Judul Section
-                  if (item.trim().endsWith(':')) {
+                  const isHeader = item.trim().endsWith(':');
+                  const hasColon = item.includes(':');
+
+                  if (isHeader) {
                     return <h4 key={index} className="font-bold text-blue-900 mt-5 mb-2">{item}</h4>;
                   }
-                  // 2. Jika kalimat mengandung titik dua (:) di tengah -> Jadikan List Poin
-                  if (item.includes(':') && index > 1) {
+                  if (hasColon) {
                     const [boldPart, ...restPart] = item.split(':');
                     return (
                       <div key={index} className="flex items-start mb-2 ml-2 md:ml-4">
@@ -912,7 +905,6 @@ function ProjectDetailView({ project, onBack }) {
                       </div>
                     );
                   }
-                  // 3. Kalimat biasa -> Jadikan Paragraf
                   return <p key={index} className="mb-3">{item}</p>;
                 })
               ) : (
@@ -920,6 +912,7 @@ function ProjectDetailView({ project, onBack }) {
               )}
             </div>
           </div>
+          
         </div>
         <div className="space-y-8">
           {project.slides && project.slides.length > 0 && (
@@ -931,15 +924,12 @@ function ProjectDetailView({ project, onBack }) {
           )}
           <section className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 text-left">
             <h2 className="text-2xl font-bold text-slate-900 mb-4 border-b pb-4">Latar Belakang</h2>
-            {/* <p className="text-slate-600 leading-relaxed text-lg">{project.background}</p> */}
             <div className="text-slate-600 leading-relaxed text-lg">
               {Array.isArray(project.background) ? (
                 project.background.map((item, index) => {
-                  // 1. Jika kalimat berakhiran titik dua (:) -> Jadikan Judul Section
                   if (item.trim().endsWith(':')) {
                     return <h4 key={index} className="font-bold text-slate-900 mt-5 mb-2">{item}</h4>;
                   }
-                  // 2. Jika kalimat mengandung titik dua (:) di tengah -> Jadikan List Poin
                   if (item.includes(':') && index > 1) {
                     const [boldPart, ...restPart] = item.split(':');
                     return (
@@ -949,7 +939,6 @@ function ProjectDetailView({ project, onBack }) {
                       </div>
                     );
                   }
-                  // 3. Kalimat biasa -> Jadikan Paragraf
                   return <p key={index} className="mb-3">{item}</p>;
                 })
               ) : (
@@ -957,11 +946,11 @@ function ProjectDetailView({ project, onBack }) {
               )}
             </div>
           </section>
+
           <section className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 text-left">
             <h2 className="text-2xl font-bold text-slate-900 mb-6 border-b pb-4">Langkah Implementasi</h2>
             <ul className="space-y-4">
               {project.implementation.map((step, idx) => {
-                // Logika pemisahan teks berdasarkan titik dua (:)
                 const hasColon = step.includes(':');
                 let boldPart = '';
                 let restPart = '';
@@ -969,16 +958,14 @@ function ProjectDetailView({ project, onBack }) {
                 if (hasColon) {
                   const parts = step.split(':');
                   boldPart = parts[0];
-                  restPart = parts.slice(1).join(':'); // Gabungkan kembali jika ada titik dua lain di sisa kalimat
+                  restPart = parts.slice(1).join(':'); 
                 }
 
                 return (
                   <li key={idx} className="flex items-center">
-                    {/* Lingkaran Angka */}
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center mr-4 mt-0.5 border border-blue-200">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center mr-4 border border-blue-200">
                       {idx + 1}
                     </div>
-                    {/* Teks Implementasi */}
                     <div className="text-slate-700 text-lg leading-relaxed">
                       {hasColon ? (
                         <p>
@@ -994,51 +981,40 @@ function ProjectDetailView({ project, onBack }) {
               })}
             </ul>
           </section>
+
           <section className="bg-slate-900 rounded-2xl p-8 shadow-lg text-left">
             <h2 className="text-2xl font-bold text-white mb-6 border-b border-slate-700 pb-4">Hasil & Pencapaian</h2>
-            {/* <div className="grid gap-4">
-              {project.results.map((res, idx) => (
-                <div key={idx} className="flex items-start">
-                  <CheckCircle className="w-6 h-6 text-green-400 mr-3 mt-0.5" />
-                  <p className="text-slate-200 text-lg leading-relaxed">{res}</p>
-                </div>
-              ))}
-            </div> */}
             <div className="grid gap-4">
               {project.results.map((res, idx) => {
-              // Logika Cerdas: Cek apakah ini kalimat pengantar atau poin hasil
-              const isHeader = res.trim().endsWith(':');
-              const hasColon = res.includes(':');
+                const isHeader = res.trim().endsWith(':');
+                const hasColon = res.includes(':');
 
-              if (isHeader) {
-                // Jika kalimat berakhiran titik dua (Teks Pengantar) -> Tanpa Centang
+                if (isHeader) {
+                  return (
+                    <p key={idx} className="text-slate-300 text-lg leading-relaxed mb-2">
+                      {res}
+                    </p>
+                  );
+                }
+
+                if (hasColon) {
+                  const [boldPart, ...restPart] = res.split(':');
+                  return (
+                    <div key={idx} className="flex items-start">
+                      <CheckCircle className="w-6 h-6 text-green-400 mr-3 flex-shrink-0 mt-0.5" />
+                      <p className="text-slate-200 text-lg leading-relaxed">
+                        <strong className="text-white font-semibold">{boldPart}:</strong>{restPart.join(':')}
+                      </p>
+                    </div>
+                  );
+                }
+
                 return (
-                <p key={idx} className="text-slate-300 text-lg leading-relaxed mb-2">
-                  {res}
-                </p>
+                  <div key={idx} className="flex items-start">
+                    <CheckCircle className="w-6 h-6 text-green-400 mr-3 flex-shrink-0 mt-0.5" />
+                    <p className="text-slate-200 text-lg leading-relaxed">{res}</p>
+                  </div>
                 );
-              }
-
-              if (hasColon) {
-                // Jika ada titik dua di tengah kalimat -> Beri Centang + Bold
-                const [boldPart, ...restPart] = res.split(':');
-                return (
-                <div key={idx} className="flex items-start">
-                  <CheckCircle className="w-6 h-6 text-green-400 mr-3 flex-shrink-0 mt-0.5" />
-                  <p className="text-slate-200 text-lg leading-relaxed">
-                  <strong className="text-white font-semibold">{boldPart}:</strong>{restPart.join(':')}
-                  </p>
-                </div>
-                );
-              }
-
-              // Default: Kalimat biasa -> Beri Centang tanpa Bold
-              return (
-                <div key={idx} className="flex items-start">
-                <CheckCircle className="w-6 h-6 text-green-400 mr-3 flex-shrink-0 mt-0.5" />
-                <p className="text-slate-200 text-lg leading-relaxed">{res}</p>
-                </div>
-              );
               })}
             </div>
           </section>
