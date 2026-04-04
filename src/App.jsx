@@ -199,7 +199,7 @@ const projectsData = [
     shortDesc: 'Integrasi agen AI cerdas untuk otomasi dukungan IT dan layanan mandiri (self-service).',
     tech: ['Copilot Studio', 'Power Automate', 'Azure OpenAI'],
     businessValue: [
-      'Banyak organisasi menghadapi "tembok" dalam skala pelayanan: semakin besar bisnis, semakin tinggi beban tim support. AI Assistant hadir bukan untuk mengganti manusia, melainkan untuk memperkuat kapasitas mereka.',
+      'Banyak organisasi menghadapi "tembok" dalam skala pelayanan, semakin besar bisnis maka semakin tinggi beban tim support. AI Assistant hadir bukan untuk mengganti manusia, melainkan untuk memperkuat kapasitas mereka.',
       'Masalah Utama Sebelum Implementasi:',
       'Respon Terhambat: Customer / user harus menunggu jam kerja atau antrean panjang untuk pertanyaan sederhana.',
       'Kelelahan Operasional: Tim support menghabiskan 70% waktu mereka menjawab pertanyaan repetitif (FAQ).',
