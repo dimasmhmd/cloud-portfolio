@@ -5,6 +5,7 @@ import {
   Layers, Lock, Cpu, Globe, CheckCircle, Image as ImageIcon,
   Maximize, Minimize, Play, ChevronLeft, Film
 } from 'lucide-react';
+import ChatWidget from './components/ChatWidget';
 
 // ==========================================
 // DATA KLIEN (OUR CLIENTS)
@@ -657,6 +658,7 @@ export default function App() {
         <ProjectDetailView project={selectedProject} onBack={navigateToHome} />
       )}
       <Footer />
+      <ChatWidget />
     </div>
   );
 }
@@ -1029,8 +1031,7 @@ function Footer() {
     <footer className="bg-slate-950 text-slate-400 py-10 border-t border-slate-800 text-center">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-center items-center gap-2 mb-4 font-bold text-lg text-slate-300">
-          <img className="h-14 md:h-18 lg:h-24 w-auto object-contain mb-1 opacity-90" 
-            src="/Data-AI-Solution-logo.png" alt="Logo" />
+          <img className="h-14 md:h-18 lg:h-24 w-auto object-contain mb-1 opacity-90" src="/Data-AI-Solution-logo.png" alt="Logo" />
         </div>
         <p className="text-sm mb-2">© {new Date().getFullYear()} Data & AI Solution Portfolio.</p>
         <p className="text-xs text-slate-600">Solusi IT Skala Enterprise • powered by PT Intikom Berlian Mustika • Microsoft Azure</p>
