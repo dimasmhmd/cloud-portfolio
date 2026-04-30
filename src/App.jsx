@@ -313,9 +313,16 @@ function Navbar({ onNavigate }) {
           <button onClick={() => handleNavClick('about')} className="hover:text-blue-600 transition-colors focus:outline-none">Tentang</button>
           <button onClick={() => handleNavClick('portfolio')} className="hover:text-blue-600 transition-colors focus:outline-none">Portofolio Proyek</button>
           <button onClick={() => handleNavClick('expertise')} className="hover:text-blue-600 transition-colors focus:outline-none">Keahlian</button>
-          <button onClick={() => handleNavClick('contact')} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none">
-            Hubungi Kami
-          </button>
+          <button onClick={() => handleNavClick('contact')} className="hover:text-blue-600 transition-colors focus:outline-none">Hubungi Kami</button>
+          
+          <div className="pl-6 border-l border-slate-200">
+		    <Button 
+			  onClick={() => window.location.href = "https://lively-plant-0c67d9e10.7.azurestaticapps.net/"} 
+			  className="px-4 py-2"
+		    >
+			  <Lock size={16} /> Login Admin
+		    </Button>
+		  </div>
         </div>
       </div>
     </nav>
