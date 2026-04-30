@@ -7,6 +7,21 @@ import {
 } from 'lucide-react';
 import ChatWidget from './components/ChatWidget';
 
+const Button = ({ children, onClick, type = 'button', variant = 'primary', isLoading = false, disabled = false, className = '', ...props }) => {
+  const baseStyle = "flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed";
+  const variants = {
+    primary: "text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm focus:ring-indigo-500",
+    dark: "text-white bg-slate-900 hover:bg-slate-800 shadow-lg hover:shadow-xl focus:ring-slate-900",
+    danger: "text-red-600 hover:bg-red-50 focus:ring-red-500",
+    outline: "text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 shadow-sm focus:ring-slate-500"
+  };
+  return (
+    <button type={type} onClick={onClick} disabled={disabled || isLoading} className={`${baseStyle} ${variants[variant]} ${className}`} {...props}>
+      {children}
+    </button>
+  );
+};
+
 // ==========================================
 // DATA KLIEN (OUR CLIENTS)
 // ==========================================
