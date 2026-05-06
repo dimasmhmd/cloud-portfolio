@@ -4,8 +4,15 @@ import {
   ChevronRight, ArrowLeft, Mail, Link, ExternalLink,
   Layers, Lock, Cpu, Globe, CheckCircle, Image as ImageIcon,
   Maximize, Minimize, Play, ChevronLeft, Film
+  // Icon tambahan untuk Admin Dashboard & Chat
+  , ChevronDown, Search, Menu, X, MessageSquare, Send, 
+  User, Paperclip, Loader2, FileText, Trash2, ArrowRight,
+  ShieldAlert, LogOut, AlertCircle, CheckCircle2, Maximize2, Minimize2
 } from 'lucide-react';
 import ChatWidget from './components/ChatWidget';
+
+// Ganti dengan URL Backend Hugging Face atau Localhost Anda
+const API_BASE_URL = "https://dimasmhmd-intikom-backend.hf.space/api";
 
 const Button = ({ children, onClick, type = 'button', variant = 'primary', isLoading = false, disabled = false, className = '', ...props }) => {
   const baseStyle = "flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed";
@@ -298,8 +305,8 @@ const projectsData = [
 // ==========================================
 // KOMPONEN: NAVBAR PERSISTEN
 // ==========================================
-function Navbar({ onNavigate }) {
-  // Fungsi penanganan navigasi agar otomatis kembali ke beranda saat dari detail proyek
+// Menerima prop onOpenAdmin dari komponen utama (App)
+function Navbar({ onNavigate, onOpenAdmin }) {
   const handleNavClick = (sectionId) => {
     onNavigate(); 
     setTimeout(() => {
@@ -321,23 +328,25 @@ function Navbar({ onNavigate }) {
           onClick={() => handleNavClick('')} 
           className="flex items-center gap-2 focus:outline-none cursor-pointer"
         >
-          {/* Logo Intikom yang Anda minta */}
-          <img src="/Intikom-Logo.png" alt="Logo" width="150" />
+          <img src="/Intikom-Logo.png" alt="Logo" width="150" onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/150x40?text=INTIKOM' }} />
         </button>
         <div className="hidden md:flex space-x-8 text-sm font-medium text-slate-600 items-center">
+          
+          <button onClick={() => window.location.href = "https://lively-plant-0c67d9e10.7.azurestaticapps.net/"} 
+            className="hover:text-blue-600 transition-colors focus:outline-none">Forecast App
+          </button>
+
           <button onClick={() => handleNavClick('about')} className="hover:text-blue-600 transition-colors focus:outline-none">Tentang</button>
           <button onClick={() => handleNavClick('portfolio')} className="hover:text-blue-600 transition-colors focus:outline-none">Portofolio Proyek</button>
           <button onClick={() => handleNavClick('expertise')} className="hover:text-blue-600 transition-colors focus:outline-none">Keahlian</button>
           <button onClick={() => handleNavClick('contact')} className="hover:text-blue-600 transition-colors focus:outline-none">Hubungi Kami</button>
-          
+                    
           <div className="pl-6 border-l border-slate-200">
-		    <Button 
-			  onClick={() => window.location.href = "https://lively-plant-0c67d9e10.7.azurestaticapps.net/"} 
-			  className="px-4 py-2"
-		    >
-			  <Lock size={16} /> Login Admin
-		    </Button>
-		  </div>
+            {/* Tombol memicu onOpenAdmin untuk pindah halaman */}
+            <Button onClick={onOpenAdmin} className="px-4 py-2">
+              <Lock size={16} /> Login Admin
+            </Button>
+          </div>
         </div>
       </div>
     </nav>
@@ -358,13 +367,11 @@ function PresentationSlider({ slides }) {
   const nextSlide = () => setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
   const prevSlide = () => setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
 
-  // Fungsi pembantu untuk cek apakah URL adalah video
   const isVideo = (url) => {
     if (!url) return false;
     return url.match(/\.(mp4|webm|ogg)$/i) || url.includes('w3schools.com/html/');
   };
 
-  // Keyboard navigation & Escape key handling
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowRight') nextSlide();
@@ -377,7 +384,6 @@ function PresentationSlider({ slides }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [slides.length, isFullscreen, isNativeFullscreen]);
 
-  // Auto-hide navigation
   useEffect(() => {
     let timeout;
     const resetIdle = () => {
@@ -404,7 +410,6 @@ function PresentationSlider({ slides }) {
     };
   }, []);
 
-  // Scroll lock saat fullscreen palsu (CSS fallback)
   useEffect(() => {
     if (isFullscreen && !isNativeFullscreen) {
       document.body.style.overflow = 'hidden'; 
@@ -438,7 +443,6 @@ function PresentationSlider({ slides }) {
           setIsFullscreen(true);
         }
       } catch (err) {
-        console.warn("Native Fullscreen diblokir. Mengaktifkan CSS Fallback.");
         setIsFullscreen(true); 
       }
     } else {
@@ -506,7 +510,6 @@ function PresentationSlider({ slides }) {
     >
       <style>{customStyles}</style>
 
-      {/* Tombol Fullscreen */}
       <button 
         onClick={toggleFullscreen}
         className={`absolute top-4 right-4 z-[100000] p-2.5 bg-slate-900/60 border border-slate-700 hover:bg-blue-600 hover:border-blue-400 rounded-lg text-white backdrop-blur-md transition-all shadow-lg ${isIdle ? 'idle-hide' : 'idle-show'}`}
@@ -515,7 +518,6 @@ function PresentationSlider({ slides }) {
         {isFullscreen ? <Minimize className="w-5 h-5" /> : <Maximize className="w-5 h-5" />}
       </button>
 
-      {/* Kontainer Utama Slide */}
       <div className="w-full h-full relative" onTouchStart={(e) => {
         const touch = e.touches[0];
         containerRef.current.startX = touch.clientX;
@@ -534,7 +536,6 @@ function PresentationSlider({ slides }) {
             >
               <div className="w-full h-full flex items-center justify-center relative">
                 
-                {/* === TIPE 1: COVER SLIDE === */}
                 {slide.type === 'cover' && (
                   <div className="w-full h-full relative flex flex-col items-center justify-center text-center p-8 tech-gradient overflow-hidden">
                     {slide.bgVideo && (
@@ -562,7 +563,6 @@ function PresentationSlider({ slides }) {
                   </div>
                 )}
 
-                {/* === TIPE 2: CONTENT === */}
                 {slide.type === 'content' && (
                   <div className="w-full h-full flex flex-col justify-center p-8 md:p-20 lg:p-24 relative slide-scroll">
                     <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
@@ -582,12 +582,11 @@ function PresentationSlider({ slides }) {
                   </div>
                 )}
 
-                {/* === TIPE 3: MEDIA (DENGAN PERBAIKAN VIDEO) === */}
                 {slide.type === 'media' && (
                   <div className="w-full h-full bg-slate-950 relative flex flex-col items-center justify-center overflow-hidden">
                     {isVideo(slide.url) ? (
                       <video 
-                        key={slide.url} // Re-render saat slide aktif atau URL berubah
+                        key={slide.url}
                         autoPlay 
                         loop 
                         muted 
@@ -628,7 +627,6 @@ function PresentationSlider({ slides }) {
         })}
       </div>
 
-      {/* Navigasi Panah */}
       <button onClick={prevSlide} className={`absolute left-4 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-slate-900/60 border border-slate-700 text-white backdrop-blur-md transition-all shadow-lg ${isIdle ? 'idle-hide md:opacity-0' : 'idle-show md:opacity-100'}`}>
         <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
       </button>
@@ -636,7 +634,6 @@ function PresentationSlider({ slides }) {
         <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
       </button>
 
-      {/* Pagination Dots */}
       <div className={`absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 bg-slate-900/50 backdrop-blur-md px-5 py-2.5 rounded-full border border-slate-700/50 ${isIdle ? 'idle-hide' : 'idle-show'}`}>
         {slides.map((_, idx) => (
           <button
@@ -650,41 +647,270 @@ function PresentationSlider({ slides }) {
   );
 }
 
-// ==========================================
-// KOMPONEN UTAMA (LAYOUT & ROUTER)
-// ==========================================
-export default function App() {
-  const [currentView, setCurrentView] = useState('home');
-  const [selectedProject, setSelectedProject] = useState(null);
 
-  const navigateToProject = (project) => {
-    setSelectedProject(project);
-    setCurrentView('detail');
-    window.scrollTo(0, 0);
+// ==========================================
+// KOMPONEN DASHBOARD ADMIN (PERSIS DARI REFERENSI)
+// ==========================================
+function AdminDashboard({ onLogout }) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [password, setPassword] = useState('');
+  const [files, setFiles] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [notification, setNotification] = useState({ show: false, message: '', type: 'success' });
+  const fileInputRef = useRef(null);
+
+  const showNotif = (message, type = 'success') => {
+    setNotification({ show: true, message, type });
+    setTimeout(() => setNotification({ show: false, message: '', type: 'success' }), 5000);
   };
 
-  const navigateToHome = () => {
-    setSelectedProject(null);
-    setCurrentView('home');
-    window.scrollTo(0, 0);
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (password === 'P@ssw0rd123') setIsLoggedIn(true);
+    else showNotif('Password salah!', 'error');
   };
 
-  return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
-      {/* Navbar sekarang berada di luar view, sehingga muncul persisten di seluruh halaman */}
-      <Navbar onNavigate={navigateToHome} />
+  const fetchFiles = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/files`);
+      const data = await res.json();
+      if (res.ok) setFiles(data.files || []);
+      else throw new Error(data.detail || "Gagal mengambil data");
+    } catch (err) {
+      showNotif("Gagal terhubung ke backend Azure. " + err.message, "error");
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) fetchFiles();
+  }, [isLoggedIn]);
+
+  const handleFileUpload = async (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    if (selectedFiles.length === 0) return;
+
+    setIsUploading(true);
+    const formData = new FormData();
+    selectedFiles.forEach(file => formData.append("files", file));
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/upload`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
       
-      {currentView === 'home' ? (
-        <HomeView onSelectProject={navigateToProject} />
-      ) : (
-        <ProjectDetailView project={selectedProject} onBack={navigateToHome} />
-      )}
-      <Footer />
-      <ChatWidget />
+      if (response.ok) {
+        showNotif(data.message, "success");
+        fetchFiles(); // Refresh tabel
+      } else {
+        throw new Error(data.detail);
+      }
+    } catch (error) {
+      showNotif("Gagal mengunggah: " + error.message, "error");
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const handleDelete = async (filename) => {
+    if (!window.confirm(`Yakin ingin menghapus dokumen "${filename}"?\n\nTindakan ini akan menghapus file dari Storage DAN memori obrolan AI selamanya.`)) return;
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}/files/${encodeURIComponent(filename)}`, {
+        method: "DELETE"
+      });
+      const data = await response.json();
+      
+      if (response.ok) {
+        showNotif(data.message, "success");
+        fetchFiles(); // Refresh tabel setelah dihapus
+      } else {
+        throw new Error(data.detail);
+      }
+    } catch (error) {
+      showNotif("Gagal menghapus: " + error.message, "error");
+    }
+  };
+
+  // Tampilan Halaman Login Admin
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+        <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-2 bg-[#14429A]"></div>
+          {/* Tombol kembali yang memanggil prop onLogout (kembali ke Home) */}
+          <button onClick={onLogout} className="absolute top-6 right-6 text-gray-400 hover:text-gray-600"><X size={20}/></button>
+          
+          <div className="flex justify-center mb-6">
+            <div className="bg-white p-2 rounded-xl shadow-sm border border-gray-100">
+              <img src="/image_5ffce0.png" alt="Intikom Logo" className="h-12 object-contain" onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/150x40?text=INTIKOM' }} />
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold text-center text-gray-900 mb-2">Admin Akses</h2>
+          <p className="text-center text-sm text-gray-500 mb-8">Masuk untuk mengelola basis pengetahuan AI.</p>
+          
+          {notification.show && (
+            <div className="mb-4 p-3 bg-red-50 text-red-600 text-sm rounded-lg flex items-center gap-2">
+              <AlertCircle size={16} /> {notification.message}
+            </div>
+          )}
+
+          <form onSubmit={handleLogin}>
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Password System</label>
+              <input 
+                type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#14429A] transition-all"
+                placeholder="Masukkan password... (P@ssw0rd123)" required
+              />
+            </div>
+            <button type="submit" className="w-full bg-[#14429A] text-white font-semibold py-3 rounded-lg hover:bg-[#0f3070] transition-colors shadow-lg hover:shadow-blue-900/20">
+              Masuk ke Dashboard
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  // Tampilan Halaman Dashboard Utama
+  return (
+    <div className="min-h-screen bg-gray-100 flex flex-col">
+      {/* Navbar Admin */}
+      <nav className="bg-white shadow-sm border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+        <div className="flex items-center gap-4">
+          <img src="/image_5ffce0.png" alt="Intikom Logo" className="h-8 object-contain" onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/150x40?text=INTIKOM' }} />
+          <div className="h-8 w-px bg-gray-200"></div>
+          <div>
+            <h1 className="font-bold text-gray-800 leading-tight">AI Knowledge Dashboard</h1>
+            <p className="text-[11px] text-gray-500">Connected to Azure AI Search</p>
+          </div>
+        </div>
+        <button onClick={onLogout} className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors font-medium">
+          <LogOut size={16} /> Keluar Admin
+        </button>
+      </nav>
+
+      {/* Konten Utama */}
+      <main className="flex-1 max-w-6xl w-full mx-auto p-6 md:p-8">
+        
+        {/* Notifikasi Global */}
+        {notification.show && (
+          <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 shadow-sm border
+            ${notification.type === 'error' ? 'bg-red-50 border-red-100 text-red-700' : 'bg-green-50 border-green-100 text-green-700'}`}>
+            {notification.type === 'error' ? <AlertCircle size={20} /> : <CheckCircle2 size={20} />}
+            <span className="font-medium text-sm">{notification.message}</span>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* Panel Upload (Kiri) */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-8">
+              <h2 className="text-lg font-bold text-gray-800 mb-2">Unggah Dokumen</h2>
+              <p className="text-sm text-gray-500 mb-6 leading-relaxed">Pilih file PDF untuk ditambahkan ke dalam otak AI. Teks akan diproses dan diubah menjadi vektor di Azure.</p>
+              
+              <div 
+                onClick={() => !isUploading && fileInputRef.current?.click()}
+                className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300
+                  ${isUploading ? 'bg-gray-50 border-gray-300' : 'border-[#14429A]/30 hover:border-[#14429A] hover:bg-blue-50/50 bg-white'}`}
+              >
+                <input type="file" multiple accept=".pdf" className="hidden" ref={fileInputRef} onChange={handleFileUpload} disabled={isUploading} />
+                {isUploading ? (
+                  <>
+                    <Loader2 className="animate-spin text-[#14429A] mb-4" size={32} />
+                    <p className="font-semibold text-[#14429A]">Memproses & Sinkronisasi...</p>
+                    <p className="text-xs text-gray-500 mt-2">Mohon tunggu, sedang mengirim ke Azure.</p>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mb-4 text-[#14429A]">
+                      <Paperclip size={24} />
+                    </div>
+                    <p className="font-bold text-gray-700">Pilih File PDF</p>
+                    <p className="text-xs text-gray-400 mt-2">Bisa memilih lebih dari 1 file</p>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Tabel Dokumen (Kanan) */}
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+              <div className="px-6 py-5 border-b border-gray-200 flex justify-between items-center bg-gray-50/50">
+                <h2 className="text-lg font-bold text-gray-800">Daftar Dokumen Terindeks</h2>
+                <button onClick={fetchFiles} disabled={isLoading} className="text-sm text-[#14429A] hover:underline font-medium flex items-center gap-1">
+                  {isLoading ? <Loader2 size={14} className="animate-spin" /> : null} Refresh Data
+                </button>
+              </div>
+              
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm text-gray-600">
+                  <thead className="bg-gray-50 text-gray-500 font-medium uppercase text-xs border-b border-gray-200">
+                    <tr>
+                      <th className="px-6 py-4">Nama File</th>
+                      <th className="px-6 py-4">Ukuran</th>
+                      <th className="px-6 py-4 text-center">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {isLoading && files.length === 0 ? (
+                      <tr>
+                        <td colSpan="3" className="px-6 py-12 text-center text-gray-500">
+                          <Loader2 className="animate-spin mx-auto mb-2 text-[#14429A]" size={24} /> Memuat data dari Azure...
+                        </td>
+                      </tr>
+                    ) : files.length === 0 ? (
+                      <tr>
+                        <td colSpan="3" className="px-6 py-12 text-center text-gray-500">
+                          <FileText className="mx-auto mb-3 text-gray-300" size={32} />
+                          Belum ada dokumen yang diunggah. Basis data AI kosong.
+                        </td>
+                      </tr>
+                    ) : (
+                      files.map((file, idx) => (
+                        <tr key={idx} className="hover:bg-gray-50/80 transition-colors">
+                          <td className="px-6 py-4 font-medium text-gray-800 flex items-center gap-3">
+                            <FileText size={18} className="text-[#14429A]" /> {file.filename}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {(file.size / 1024 / 1024).toFixed(2)} MB
+                          </td>
+                          <td className="px-6 py-4 text-center">
+                            <button 
+                              onClick={() => handleDelete(file.filename)}
+                              className="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-lg transition-colors inline-flex"
+                              title="Hapus File dan Memori AI"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </main>
     </div>
   );
 }
 
+
+// ==========================================
+// VIEW HALAMAN HOME (TAMPILAN UTAMA PORTOFOLIO)
+// ==========================================
 function HomeView({ onSelectProject }) {
   return (
     <main>
@@ -768,9 +994,6 @@ function HomeView({ onSelectProject }) {
         </div>
       </section>
 
-      {/* ========================================== */}
-      {/* SECTION KLIEN KAMI (OUR CLIENTS) */}
-      {/* ========================================== */}
       <section id="clients" className="py-12 bg-white border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm font-semibold text-slate-400 uppercase tracking-widest mb-8">
@@ -897,6 +1120,9 @@ function HomeView({ onSelectProject }) {
   );
 }
 
+// ==========================================
+// VIEW HALAMAN DETAIL PROYEK
+// ==========================================
 function ProjectDetailView({ project, onBack }) {
   if (!project) return null;
   return (
@@ -936,7 +1162,6 @@ function ProjectDetailView({ project, onBack }) {
               )}
             </div>
           </div>
-          
         </div>
         <div className="space-y-8">
           {project.slides && project.slides.length > 0 && (
@@ -1048,16 +1273,82 @@ function ProjectDetailView({ project, onBack }) {
   );
 }
 
+// ==========================================
+// VIEW FOOTER
+// ==========================================
 function Footer() {
   return (
     <footer className="bg-slate-950 text-slate-400 py-10 border-t border-slate-800 text-center">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-center items-center gap-2 mb-4 font-bold text-lg text-slate-300">
-          <img className="h-14 md:h-18 lg:h-24 w-auto object-contain mb-1 opacity-90" src="/Data-AI-Solution-logo.png" alt="Logo" />
+          <img className="h-14 md:h-18 lg:h-24 w-auto object-contain mb-1 opacity-90" src="/Data-AI-Solution-logo.png" alt="Logo" onError={(e) => { e.target.onerror = null; e.target.style.display = 'none' }} />
         </div>
         <p className="text-sm mb-2">© {new Date().getFullYear()} Data & AI Solution Portfolio.</p>
         <p className="text-xs text-slate-600">Solusi IT Skala Enterprise • powered by PT Intikom Berlian Mustika • Microsoft Azure</p>
       </div>
     </footer>
+  );
+}
+
+// ==========================================
+// KOMPONEN UTAMA (LAYOUT & ROUTER)
+// ==========================================
+export default function App() {
+  // 1. STATE UNTUK MENGATUR HALAMAN (ROUTING)
+  // currentView menyimpan nilai halaman yang sedang aktif ('home', 'detail', atau 'admin')
+  const [currentView, setCurrentView] = useState('home');
+  
+  // State untuk menyimpan data proyek mana yang sedang diklik user
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  // Fungsi untuk pindah ke halaman Detail Proyek
+  const navigateToProject = (project) => {
+    setSelectedProject(project);
+    setCurrentView('detail'); // Ubah status layar ke 'detail'
+    window.scrollTo(0, 0);    // Gulir layar ke paling atas
+  };
+
+  // Fungsi untuk kembali ke halaman Utama (Beranda)
+  const navigateToHome = () => {
+    setSelectedProject(null);
+    setCurrentView('home');   // Ubah status layar ke 'home'
+    window.scrollTo(0, 0);    // Gulir layar ke paling atas
+  };
+
+  // Fungsi untuk masuk ke halaman Admin (Dipanggil saat tombol "Login Admin" diklik)
+  const navigateToAdmin = () => {
+    setCurrentView('admin');  // Ubah status layar ke 'admin'
+    window.scrollTo(0, 0);    // Gulir layar ke paling atas
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 relative selection:bg-blue-500 selection:text-white">
+      
+      {/* 2. LOGIKA KONDISIONAL (CONDITIONAL RENDERING) */}
+      {currentView === 'admin' ? (
+        // JIKA USER MEMILIH MENU ADMIN: Tampilkan saja halaman AdminDashboard
+        // Kita berikan 'navigateToHome' agar jika mereka klik tombol X / Keluar, mereka balik ke beranda
+        <AdminDashboard onLogout={navigateToHome} /> 
+      ) : (
+        // JIKA BUKAN MENU ADMIN: Tampilkan layout Portofolio (Navbar + Konten Utama + Footer + Chat)
+        <>
+          {/* Navbar persisten di atas. Kita kirim 'navigateToAdmin' ke tombol Login Admin */}
+          <Navbar onNavigate={navigateToHome} onOpenAdmin={navigateToAdmin} />
+          
+          {/* Cek lagi, apakah sedang di menu 'home' atau 'detail'? */}
+          {currentView === 'home' ? (
+            <HomeView onSelectProject={navigateToProject} />
+          ) : (
+            <ProjectDetailView project={selectedProject} onBack={navigateToHome} />
+          )}
+          
+          <Footer />
+
+          {/* Chatbot Mengambang (Hanya muncul jika bukan di layar Admin) */}
+          <ChatWidget />
+        </>
+      )}
+
+    </div>
   );
 }
