@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Server, Database, Shield, Cloud, Activity, Code, 
+import {
+  Server, Database, Shield, Cloud, Activity, Code,
   ChevronRight, ArrowLeft, Mail, Link, ExternalLink,
   Layers, Lock, Cpu, Globe, CheckCircle, Image as ImageIcon,
   Maximize, Minimize, Play, ChevronLeft, Film
   // Icon tambahan untuk Admin Dashboard & Chat
-  , ChevronDown, Search, Menu, X, MessageSquare, Send, 
+  , ChevronDown, Search, Menu, X, MessageSquare, Send,
   User, Paperclip, Loader2, FileText, Trash2, ArrowRight,
   ShieldAlert, LogOut, AlertCircle, CheckCircle2, Maximize2, Minimize2
 } from 'lucide-react';
@@ -72,7 +72,7 @@ const projectsData = [
       'Transformasi Digital: Kebutuhan mendesak untuk memiliki akses data dari berbagai wilayah dengan aman.'
     ],
     architecture: 'Infrastruktur menggunakan Azure Virtual Network (VNet) yang terhubung ke router lokal via Azure VPN Gateway (IPsec/IKEv2). VM di Azure diisolasi menggunakan Network Security Group (NSG) dan hanya dapat diakses melalui alamat IP privat dari intranet perusahaan.',
-    
+
     slides: [
       { type: 'media', url: '/hybrid-cloud/slide1.png', fit: 'contain' },
       { type: 'media', url: '/hybrid-cloud/slide2.png', fit: 'contain' },
@@ -80,7 +80,7 @@ const projectsData = [
       { type: 'media', url: '/hybrid-cloud/slide4.png', fit: 'contain' },
       { type: 'media', url: '/hybrid-cloud/slide5.png', fit: 'contain' },
     ],
-    
+
     implementation: [
       'Assessment Infrastruktur Existing: Audit kapasitas server, penggunaan bandwidth, dan kompatibilitas aplikasi.',
       'Perencanaan Arsitektur Hybrid: Merancang topologi jaringan (IP Address, Subnet) agar server lokal dan Azure bisa saling "berbicara" dalam satu jaringan privat.',
@@ -136,7 +136,7 @@ const projectsData = [
       { type: 'media', url: '/vm-mi/slide3.png', fit: 'contain' },
       { type: 'media', url: '/vm-mi/slide4.png', fit: 'contain' },
       { type: 'media', url: '/vm-mi/slide5.png', fit: 'contain' },
-    ], 
+    ],
     implementation: [
       'Assessment Database Existing: Mengevaluasi ukuran data, skema, dan kompatibilitas menggunakan Azure Data Migration Assistant (DMA).',
       'Architecture Design: Merancang topologi Azure Virtual Network (VNet) untuk memastikan isolasi jaringan yang aman.',
@@ -243,7 +243,7 @@ const projectsData = [
       'Ketergantungan Manusia: Kehilangan satu karyawan senior berarti kehilangan banyak "pengetahuan" tentang produk.'
     ],
     architecture: 'Bot AI dibangun, diintegrasikan dengan Azure dan menggunakan Power Automate untuk memberikan informasi berdasarkan trigger percapapan.',
-    
+
     slides: [
       { type: 'media', url: '/chatbot/slide1.png', fit: 'contain' },
       { type: 'media', url: '/chatbot/slide2.png', fit: 'contain' },
@@ -253,10 +253,10 @@ const projectsData = [
       { type: 'media', url: '/chatbot/slide6.png', fit: 'contain' },
       { type: 'media', url: '/chatbot/slide7.png', fit: 'contain' },
       { type: 'media', url: '/chatbot/slide8.png', fit: 'contain' },
-      { 
-        type: 'media', 
-        url: '/chatbot/demo.mp4', 
-        caption: 'Video Demonstrasi Fitur AI Chatbot' 
+      {
+        type: 'media',
+        url: '/chatbot/demo.mp4',
+        caption: 'Video Demonstrasi Fitur AI Chatbot'
       },
       { type: 'media', url: '/chatbot/slide9.png', fit: 'contain' },
     ],
@@ -299,6 +299,48 @@ const projectsData = [
       'Keamanan data granular berbasis peran (Row-Level Security) berhasil diimplementasikan.',
       'Infrastruktur siap untuk scale-out secara horizontal jika jumlah pengguna bertambah.'
     ]
+  },
+  {
+    id: 'ai-whatsapp-sql',
+    title: 'Enterprise Data-Driven AI Chatbot: WhatsApp to SQL',
+    category: 'AI & Automation',
+    shortDesc: 'Membangun asisten virtual di WhatsApp yang memungkinkan manajemen menarik laporan langsung dari SQL Server hanya dengan bahasa natural.',
+    tech: ['n8n', 'WhatsApp WAHA', 'Azure OpenAI', 'SQL Server'],
+    businessValue: [
+      'Mempercepat Alur Informasi: Mengeliminasi hambatan (bottleneck) di mana eksekutif dan manajer harus menunggu tim IT untuk menarik data sederhana.',
+      'Self-Service Data 24/7: Memberdayakan pengguna non-teknis untuk mendapatkan wawasan data (seperti total penjualan atau status inventaris) kapan saja dan di mana saja langsung dari WhatsApp.',
+      'Keamanan Enterprise-Grade (AI Guardrails): Di balik kemudahannya, sistem dilengkapi dengan SQL Validator berlapis yang secara aktif memblokir upaya prompt-injection atau modifikasi data seperti DELETE/DROP, memastikan integritas database produksi tetap terjaga 100%.'
+    ],
+    background: [
+      'Kondisi Existing:',
+      'Eksekutif dan tim lapangan seringkali membutuhkan akses data krusial secara instan saat sedang berpergian atau di tengah rapat penting.',
+      'Tantangan Utama:',
+      'Ketergantungan pada Tim IT: Setiap permintaan laporan ad-hoc harus melalui sistem ticketing yang memakan waktu.',
+      'Aksesibilitas yang Kurang Praktis: Harus membuka laptop dan login ke sistem BI yang rumit hanya untuk sekadar melihat satu atau dua metrik.',
+      'Kebutuhan:',
+      'Sebuah jembatan pintar dan aman antara pengguna bisnis dan database perusahaan, menggunakan antarmuka yang sudah paling familier: WhatsApp.'
+    ],
+    architecture: 'Integrasi WhatsApp Webhook menggunakan infrastruktur WAHA, yang diorkestrasi oleh n8n. Memori Kontekstual LangChain memungkinkan percakapan yang berkelanjutan. Azure OpenAI mengubah bahasa natural menjadi bahasa kueri (SQL), yang divalidasi dan dieksekusi dengan aman pada Microsoft SQL Server, kemudian diformat kembali menjadi respons manusiawi oleh LLM.',
+    slides: [
+      { type: 'media', url: '/wa-sql/slide1.png', fit: 'contain' },
+      { type: 'media', url: '/wa-sql/slide4.png', fit: 'contain' },
+      { type: 'media', url: '/wa-sql/slide2.png', fit: 'contain' },
+      { type: 'media', url: '/wa-sql/slide3.png', fit: 'contain' }
+    ],
+    implementation: [
+      'Setup WhatsApp Webhook: Konfigurasi event listener pada WAHA untuk menangkap pesan masuk secara real-time dan melakukan filter pesan masuk.',
+      'Contextual Memory Integration: Menerapkan memory buffer untuk menyimpan 6 percakapan terakhir agar AI dapat memahami konteks lanjutan (seperti "Berapa totalnya?" merujuk ke percakapan sebelumnya).',
+      'Advanced Prompt Engineering: Mendesain sistem prompt ketat yang menginstruksikan AI untuk bertindak murni sebagai generator SQL berdasarkan skema tabel (customers, sales) yang diizinkan.',
+      'Custom SQL Validator Development: Membangun custom code node (guardrails) menggunakan Regular Expression untuk memastikan query yang dihasilkan hanya berisi SELECT dan menolak keras keyword manipulasi data.',
+      'Database Connection & Aggregation: Konfigurasi secure tunneling ke instans Microsoft SQL Server dan agregasi data mentah JSON menjadi format tekstual yang siap diolah.',
+      'Natural Language Formatting: Pemrosesan tahap akhir oleh LLM untuk menerjemahkan data mentah database menjadi kalimat bahasa Indonesia yang profesional, ramah, dan bebas istilah teknis.'
+    ],
+    results: [
+      'Pengurangan Beban Tim IT: Penurunan volume tiket permintaan data ad-hoc hingga 70%.',
+      'Respons Instan: Waktu tunggu penarikan data menyusut dari rata-rata beberapa jam menjadi di bawah 5 detik.',
+      'User Adoption Maksimal: Karena menggunakan WhatsApp, kurva pembelajaran nyaris nol bagi seluruh jajaran eksekutif dan sales.',
+      'Zero Security Breach: SQL Validator berfungsi sempurna menghalau seluruh anomali perintah non-baca yang dihasilkan.'
+    ]
   }
 ];
 
@@ -308,7 +350,7 @@ const projectsData = [
 // Menerima prop onOpenAdmin dari komponen utama (App)
 function Navbar({ onNavigate, onOpenAdmin }) {
   const handleNavClick = (sectionId) => {
-    onNavigate(); 
+    onNavigate();
     setTimeout(() => {
       if (sectionId) {
         const element = document.getElementById(sectionId);
@@ -324,23 +366,23 @@ function Navbar({ onNavigate, onOpenAdmin }) {
   return (
     <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-        <button 
-          onClick={() => handleNavClick('')} 
+        <button
+          onClick={() => handleNavClick('')}
           className="flex items-center gap-2 focus:outline-none cursor-pointer"
         >
           <img src="/Intikom-Logo.png" alt="Logo" width="150" onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/150x40?text=INTIKOM' }} />
         </button>
         <div className="hidden md:flex space-x-8 text-sm font-medium text-slate-600 items-center">
-          
-          <button onClick={() => window.location.href = "https://lively-plant-0c67d9e10.7.azurestaticapps.net/"} 
+
+          <button onClick={() => window.location.href = "https://lively-plant-0c67d9e10.7.azurestaticapps.net/"}
             className="hover:text-blue-600 transition-colors focus:outline-none">Forecast App
           </button>
 
           <button onClick={() => handleNavClick('about')} className="hover:text-blue-600 transition-colors focus:outline-none">Tentang</button>
-          <button onClick={() => handleNavClick('portfolio')} className="hover:text-blue-600 transition-colors focus:outline-none">Portofolio Proyek</button>
+          <button onClick={() => handleNavClick('portfolio')} className="hover:text-blue-600 transition-colors focus:outline-none">Portofolio</button>
           <button onClick={() => handleNavClick('expertise')} className="hover:text-blue-600 transition-colors focus:outline-none">Keahlian</button>
           <button onClick={() => handleNavClick('contact')} className="hover:text-blue-600 transition-colors focus:outline-none">Hubungi Kami</button>
-                    
+
           <div className="pl-6 border-l border-slate-200">
             {/* Tombol memicu onOpenAdmin untuk pindah halaman */}
             <Button onClick={onOpenAdmin} className="px-4 py-2">
@@ -361,9 +403,9 @@ function PresentationSlider({ slides }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isNativeFullscreen, setIsNativeFullscreen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  
+
   const containerRef = useRef(null);
-  
+
   const nextSlide = () => setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
   const prevSlide = () => setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
 
@@ -412,14 +454,14 @@ function PresentationSlider({ slides }) {
 
   useEffect(() => {
     if (isFullscreen && !isNativeFullscreen) {
-      document.body.style.overflow = 'hidden'; 
+      document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
       document.documentElement.style.overflow = 'unset';
     }
-    return () => { 
-      document.body.style.overflow = 'unset'; 
+    return () => {
+      document.body.style.overflow = 'unset';
       document.documentElement.style.overflow = 'unset';
     };
   }, [isFullscreen, isNativeFullscreen]);
@@ -443,7 +485,7 @@ function PresentationSlider({ slides }) {
           setIsFullscreen(true);
         }
       } catch (err) {
-        setIsFullscreen(true); 
+        setIsFullscreen(true);
       }
     } else {
       try {
@@ -497,20 +539,19 @@ function PresentationSlider({ slides }) {
   if (!slides || slides.length === 0) return null;
 
   return (
-    <div 
+    <div
       ref={containerRef}
       id="presentation-container"
-      className={`relative overflow-hidden bg-slate-950 transition-all duration-300 ease-in-out ${
-        isNativeFullscreen
-          ? 'w-full h-full rounded-none border-none' 
-          : isFullscreen
-            ? '!fixed !inset-0 !z-[99999] !w-screen !h-[100dvh] !m-0 !p-0 !rounded-none !border-none' 
-            : 'aspect-[16/10] md:aspect-video w-full mt-8 rounded-2xl border border-slate-800 shadow-2xl group'
-      }`}
+      className={`relative overflow-hidden bg-slate-950 transition-all duration-300 ease-in-out ${isNativeFullscreen
+        ? 'w-full h-full rounded-none border-none'
+        : isFullscreen
+          ? '!fixed !inset-0 !z-[99999] !w-screen !h-[100dvh] !m-0 !p-0 !rounded-none !border-none'
+          : 'aspect-[16/10] md:aspect-video w-full mt-8 rounded-2xl border border-slate-800 shadow-2xl group'
+        }`}
     >
       <style>{customStyles}</style>
 
-      <button 
+      <button
         onClick={toggleFullscreen}
         className={`absolute top-4 right-4 z-[100000] p-2.5 bg-slate-900/60 border border-slate-700 hover:bg-blue-600 hover:border-blue-400 rounded-lg text-white backdrop-blur-md transition-all shadow-lg ${isIdle ? 'idle-hide' : 'idle-show'}`}
         title={isFullscreen ? "Keluar Fullscreen (Esc)" : "Mulai Fullscreen"}
@@ -530,12 +571,12 @@ function PresentationSlider({ slides }) {
         {slides.map((slide, index) => {
           const isActive = index === currentIndex;
           return (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className={`absolute inset-0 w-full h-full bg-slate-950 transition-opacity duration-700 ease-in-out ${isActive ? 'opacity-100 z-10 custom-slide-active' : 'opacity-0 z-0 pointer-events-none'}`}
             >
               <div className="w-full h-full flex items-center justify-center relative">
-                
+
                 {slide.type === 'cover' && (
                   <div className="w-full h-full relative flex flex-col items-center justify-center text-center p-8 tech-gradient overflow-hidden">
                     {slide.bgVideo && (
@@ -545,7 +586,7 @@ function PresentationSlider({ slides }) {
                     )}
                     <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
-                    
+
                     <div className="relative z-10 max-w-5xl px-4">
                       <div className={`transition-all duration-1000 transform ${isActive ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
                         <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-blue-500/20 border border-blue-400/40 text-blue-300 text-xs md:text-sm font-bold tracking-widest uppercase mb-8 backdrop-blur-md shadow-[0_0_20px_rgba(59,130,246,0.3)]">
@@ -585,20 +626,20 @@ function PresentationSlider({ slides }) {
                 {slide.type === 'media' && (
                   <div className="w-full h-full bg-slate-950 relative flex flex-col items-center justify-center overflow-hidden">
                     {isVideo(slide.url) ? (
-                      <video 
+                      <video
                         key={slide.url}
-                        autoPlay 
-                        loop 
-                        muted 
-                        playsInline 
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
                         className={`w-full h-full transition-all duration-1000 ${slide.fit === 'cover' ? 'object-cover' : 'object-contain'} ${isActive ? 'scale-100 opacity-100' : 'scale-105 opacity-0'}`}
                       >
                         <source src={slide.url} type="video/mp4" />
                         Browser tidak mendukung video.
                       </video>
                     ) : (
-                      <img 
-                        src={slide.url} 
+                      <img
+                        src={slide.url}
                         alt={slide.caption}
                         className={`w-full h-full transition-all duration-1000 ${slide.fit === 'cover' ? 'object-cover' : 'object-contain'} ${isActive ? 'scale-100 opacity-100' : 'scale-105 opacity-0'}`}
                         onError={(e) => {
@@ -607,13 +648,13 @@ function PresentationSlider({ slides }) {
                         }}
                       />
                     )}
-                    
+
                     <div className="absolute inset-0 hidden flex-col items-center justify-center text-slate-500 bg-slate-900 border-2 border-dashed border-slate-700">
-                       {isVideo(slide.url) ? <Film className="w-16 h-16 mb-4 opacity-50" /> : <ImageIcon className="w-16 h-16 mb-4 opacity-50" />}
-                       <span className="text-lg font-medium">Media Tidak Ditemukan</span>
-                       <span className="text-sm font-mono text-slate-600 mt-2 text-center px-4">{slide.url}</span>
+                      {isVideo(slide.url) ? <Film className="w-16 h-16 mb-4 opacity-50" /> : <ImageIcon className="w-16 h-16 mb-4 opacity-50" />}
+                      <span className="text-lg font-medium">Media Tidak Ditemukan</span>
+                      <span className="text-sm font-mono text-slate-600 mt-2 text-center px-4">{slide.url}</span>
                     </div>
-                    
+
                     {slide.caption && (
                       <div className={`absolute bottom-6 md:bottom-12 px-6 py-2.5 md:px-8 md:py-3.5 bg-slate-900/80 backdrop-blur-md border border-slate-700/80 rounded-full transition-all duration-700 delay-500 shadow-xl z-20 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                         <p className="text-slate-200 font-medium tracking-wide text-xs md:text-base">{slide.caption}</p>
@@ -702,7 +743,7 @@ function AdminDashboard({ onLogout }) {
         body: formData,
       });
       const data = await response.json();
-      
+
       if (response.ok) {
         showNotif(data.message, "success");
         fetchFiles(); // Refresh tabel
@@ -719,13 +760,13 @@ function AdminDashboard({ onLogout }) {
 
   const handleDelete = async (filename) => {
     if (!window.confirm(`Yakin ingin menghapus dokumen "${filename}"?\n\nTindakan ini akan menghapus file dari Storage DAN memori obrolan AI selamanya.`)) return;
-    
+
     try {
       const response = await fetch(`${API_BASE_URL}/files/${encodeURIComponent(filename)}`, {
         method: "DELETE"
       });
       const data = await response.json();
-      
+
       if (response.ok) {
         showNotif(data.message, "success");
         fetchFiles(); // Refresh tabel setelah dihapus
@@ -744,8 +785,8 @@ function AdminDashboard({ onLogout }) {
         <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-2 bg-[#14429A]"></div>
           {/* Tombol kembali yang memanggil prop onLogout (kembali ke Home) */}
-          <button onClick={onLogout} className="absolute top-6 right-6 text-gray-400 hover:text-gray-600"><X size={20}/></button>
-          
+          <button onClick={onLogout} className="absolute top-6 right-6 text-gray-400 hover:text-gray-600"><X size={20} /></button>
+
           <div className="flex justify-center mb-6">
             <div className="bg-white p-2 rounded-xl shadow-sm border border-gray-100">
               <img src="/image_5ffce0.png" alt="Intikom Logo" className="h-12 object-contain" onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/150x40?text=INTIKOM' }} />
@@ -753,7 +794,7 @@ function AdminDashboard({ onLogout }) {
           </div>
           <h2 className="text-2xl font-bold text-center text-gray-900 mb-2">Admin Akses</h2>
           <p className="text-center text-sm text-gray-500 mb-8">Masuk untuk mengelola basis pengetahuan AI.</p>
-          
+
           {notification.show && (
             <div className="mb-4 p-3 bg-red-50 text-red-600 text-sm rounded-lg flex items-center gap-2">
               <AlertCircle size={16} /> {notification.message}
@@ -763,7 +804,7 @@ function AdminDashboard({ onLogout }) {
           <form onSubmit={handleLogin}>
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700 mb-2">Password System</label>
-              <input 
+              <input
                 type="password" value={password} onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#14429A] transition-all"
                 placeholder="Masukkan password... (P@ssw0rd123)" required
@@ -798,7 +839,7 @@ function AdminDashboard({ onLogout }) {
 
       {/* Konten Utama */}
       <main className="flex-1 max-w-6xl w-full mx-auto p-6 md:p-8">
-        
+
         {/* Notifikasi Global */}
         {notification.show && (
           <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 shadow-sm border
@@ -809,14 +850,14 @@ function AdminDashboard({ onLogout }) {
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           {/* Panel Upload (Kiri) */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sticky top-8">
               <h2 className="text-lg font-bold text-gray-800 mb-2">Unggah Dokumen</h2>
               <p className="text-sm text-gray-500 mb-6 leading-relaxed">Pilih file PDF untuk ditambahkan ke dalam otak AI. Teks akan diproses dan diubah menjadi vektor di Azure.</p>
-              
-              <div 
+
+              <div
                 onClick={() => !isUploading && fileInputRef.current?.click()}
                 className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300
                   ${isUploading ? 'bg-gray-50 border-gray-300' : 'border-[#14429A]/30 hover:border-[#14429A] hover:bg-blue-50/50 bg-white'}`}
@@ -850,7 +891,7 @@ function AdminDashboard({ onLogout }) {
                   {isLoading ? <Loader2 size={14} className="animate-spin" /> : null} Refresh Data
                 </button>
               </div>
-              
+
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm text-gray-600">
                   <thead className="bg-gray-50 text-gray-500 font-medium uppercase text-xs border-b border-gray-200">
@@ -884,7 +925,7 @@ function AdminDashboard({ onLogout }) {
                             {(file.size / 1024 / 1024).toFixed(2)} MB
                           </td>
                           <td className="px-6 py-4 text-center">
-                            <button 
+                            <button
                               onClick={() => handleDelete(file.filename)}
                               className="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-lg transition-colors inline-flex"
                               title="Hapus File dan Memori AI"
@@ -900,7 +941,7 @@ function AdminDashboard({ onLogout }) {
               </div>
             </div>
           </div>
-          
+
         </div>
       </main>
     </div>
@@ -919,7 +960,7 @@ function HomeView({ onSelectProject }) {
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-700 via-slate-900 to-slate-900"></div>
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
         </div>
-        
+
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/20 text-blue-400 text-sm font-medium mb-6">
             <Shield className="w-4 h-4" /> Enterprise-Grade IT Solutions
@@ -972,22 +1013,22 @@ function HomeView({ onSelectProject }) {
             </div>
             <div className="relative">
               <div className="aspect-square rounded-2xl bg-gradient-to-tr from-slate-200 to-slate-100 p-8 flex items-center justify-center relative overflow-hidden shadow-2xl">
-                 <div className="absolute inset-0 bg-blue-900/5 backdrop-blur-3xl"></div>
-                 <div className="relative z-10 grid grid-cols-2 gap-6 w-full h-full">
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-100 flex flex-col justify-center items-center p-6 transform translate-y-4">
-                       <Server className="w-12 h-12 text-slate-300 mb-2" />
-                       <span className="text-xs font-bold text-slate-400">ON-PREMISE</span>
+                <div className="absolute inset-0 bg-blue-900/5 backdrop-blur-3xl"></div>
+                <div className="relative z-10 grid grid-cols-2 gap-6 w-full h-full">
+                  <div className="bg-white rounded-xl shadow-sm border border-slate-100 flex flex-col justify-center items-center p-6 transform translate-y-4">
+                    <Server className="w-12 h-12 text-slate-300 mb-2" />
+                    <span className="text-xs font-bold text-slate-400">ON-PREMISE</span>
+                  </div>
+                  <div className="bg-blue-600 rounded-xl shadow-lg shadow-blue-500/20 flex flex-col justify-center items-center p-6 transform -translate-y-4">
+                    <Cloud className="w-12 h-12 text-white mb-2" />
+                    <span className="text-xs font-bold text-blue-200">AZURE CLOUD</span>
+                  </div>
+                  <div className="col-span-2 flex justify-center items-center">
+                    <div className="h-16 w-1 bg-gradient-to-b from-slate-300 to-blue-500 mx-auto rounded-full flex items-center justify-center">
+                      <Lock className="w-6 h-6 text-white bg-blue-500 rounded-full p-1" />
                     </div>
-                    <div className="bg-blue-600 rounded-xl shadow-lg shadow-blue-500/20 flex flex-col justify-center items-center p-6 transform -translate-y-4">
-                       <Cloud className="w-12 h-12 text-white mb-2" />
-                       <span className="text-xs font-bold text-blue-200">AZURE CLOUD</span>
-                    </div>
-                    <div className="col-span-2 flex justify-center items-center">
-                       <div className="h-16 w-1 bg-gradient-to-b from-slate-300 to-blue-500 mx-auto rounded-full flex items-center justify-center">
-                          <Lock className="w-6 h-6 text-white bg-blue-500 rounded-full p-1" />
-                       </div>
-                    </div>
-                 </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1002,10 +1043,10 @@ function HomeView({ onSelectProject }) {
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-100">
             {clientsData.map(client => (
               <div key={client.id} className="flex items-center justify-center hover:grayscale-0 transition-all duration-300 w-28 h-16 md:w-36 md:h-20">
-                <img 
-                  src={client.logo} 
-                  alt={client.name} 
-                  className="max-w-full max-h-full object-contain" 
+                <img
+                  src={client.logo}
+                  alt={client.name}
+                  className="max-w-full max-h-full object-contain"
                   onError={(e) => {
                     e.target.style.display = 'none';
                     e.target.nextSibling.style.display = 'block';
@@ -1134,7 +1175,7 @@ function ProjectDetailView({ project, onBack }) {
         <div className="bg-white rounded-2xl p-8 sm:p-12 shadow-sm border border-slate-200 mb-8 text-left">
           <div className="inline-block px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase mb-6">{project.category}</div>
           <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">{project.title}</h1>
-          
+
           <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-6">
             <h3 className="flex items-center text-blue-800 font-bold mb-4 text-lg"><Activity className="w-5 h-5 mr-2" /> Nilai Bisnis Utama</h3>
             <div className="text-blue-900/80 leading-relaxed">
@@ -1207,7 +1248,7 @@ function ProjectDetailView({ project, onBack }) {
                 if (hasColon) {
                   const parts = step.split(':');
                   boldPart = parts[0];
-                  restPart = parts.slice(1).join(':'); 
+                  restPart = parts.slice(1).join(':');
                 }
 
                 return (
@@ -1297,7 +1338,7 @@ export default function App() {
   // 1. STATE UNTUK MENGATUR HALAMAN (ROUTING)
   // currentView menyimpan nilai halaman yang sedang aktif ('home', 'detail', atau 'admin')
   const [currentView, setCurrentView] = useState('home');
-  
+
   // State untuk menyimpan data proyek mana yang sedang diklik user
   const [selectedProject, setSelectedProject] = useState(null);
 
@@ -1323,25 +1364,25 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 relative selection:bg-blue-500 selection:text-white">
-      
+
       {/* 2. LOGIKA KONDISIONAL (CONDITIONAL RENDERING) */}
       {currentView === 'admin' ? (
         // JIKA USER MEMILIH MENU ADMIN: Tampilkan saja halaman AdminDashboard
         // Kita berikan 'navigateToHome' agar jika mereka klik tombol X / Keluar, mereka balik ke beranda
-        <AdminDashboard onLogout={navigateToHome} /> 
+        <AdminDashboard onLogout={navigateToHome} />
       ) : (
         // JIKA BUKAN MENU ADMIN: Tampilkan layout Portofolio (Navbar + Konten Utama + Footer + Chat)
         <>
           {/* Navbar persisten di atas. Kita kirim 'navigateToAdmin' ke tombol Login Admin */}
           <Navbar onNavigate={navigateToHome} onOpenAdmin={navigateToAdmin} />
-          
+
           {/* Cek lagi, apakah sedang di menu 'home' atau 'detail'? */}
           {currentView === 'home' ? (
             <HomeView onSelectProject={navigateToProject} />
           ) : (
             <ProjectDetailView project={selectedProject} onBack={navigateToHome} />
           )}
-          
+
           <Footer />
 
           {/* Chatbot Mengambang (Hanya muncul jika bukan di layar Admin) */}
